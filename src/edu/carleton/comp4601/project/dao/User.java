@@ -8,17 +8,26 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 @XmlRootElement(name = "user")
 @XmlAccessorType (XmlAccessType.FIELD)
 public class User {
+	
+	private String authToken;
 	private String id;
 	private String firstname;
 	private String lastname;
 	private String email;
 	private String passwordHash;
+	private String gender;
+	private String birthday;
+	private long lastLoginTime;
+	
 	@XmlElement(name = "productIds")
 	private HashSet<String> productIds;
-	private long lastLoginTime;
 
 	public User() {
 		this.productIds = new HashSet<String>();
@@ -32,13 +41,24 @@ public class User {
 	@SuppressWarnings("unchecked")
 	public User(Map<?, ?> map) {
 		this();
+		this.setAuthToken((String) map.get("authtoken"));
 		this.setId((String) map.get("id"));
 		this.setFirstname((String) map.get("firstname"));
 		this.setLastname((String) map.get("lastname"));
 		this.setEmail((String) map.get("email"));
 		this.setPasswordHash((String) map.get("passwordhash"));
-		this.productIds = (HashSet<String>) map.get("productids");
+		this.setGender((String) map.get("gender"));
+		this.setBirthday((String) map.get("birthday"));
 		this.setLastLoginTime((long) map.get("lastlogintime"));
+		this.productIds = (HashSet<String>) map.get("productids");
+	}
+
+	public String getAuthToken() {
+		return authToken;
+	}
+
+	public void setAuthToken(String authToken) {
+		this.authToken = authToken;
 	}
 
 	public String getId() {
@@ -89,7 +109,42 @@ public class User {
 		this.lastLoginTime = lastLoginTime;
 	}
 	
-	public void getLoginTimeAsDate() {
-		//TODO: Joda time ?
+	public void setLastLoginTimeFromDate(DateTime date) {
+		this.lastLoginTime = date.getMillis();
+	}
+	
+	public DateTime getLoginTimeAsDate() {
+		return new DateTime(this.lastLoginTime);
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public String getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
+	}
+	
+	public void setBirthdayFromDate(DateTime date) {
+		DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm:ss");
+		this.birthday = formatter.print(date);
+	}
+	
+	public DateTime getBirthdayAsDate() {
+		DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm:ss");
+		DateTime dt = formatter.parseDateTime(this.birthday);
+		return dt;
+	}
+	
+	public HashSet<String> getProductIds() {
+		return this.productIds;
 	}
 }

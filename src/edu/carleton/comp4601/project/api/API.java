@@ -1,16 +1,13 @@
 package edu.carleton.comp4601.project.api;
 
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.UriInfo;
-
-import edu.carleton.comp4601.project.dao.GenricServerResponse;
 
 @Path("/api")
 public class API {
@@ -39,21 +36,13 @@ public class API {
 				+ "</body></h1>" + "</html> ";
 	}
 	
-	@POST
-	@Path("/user")
-	@Consumes(MediaType.APPLICATION_XML) 
-	@Produces(MediaType.APPLICATION_XML)
-	public GenricServerResponse userRequestAsXML() {
-		
-		return null;
+	@Path("/user/{authToken}")
+	public Action userRequestAsXML(@PathParam("authToken") String authToken) {		
+		return new UserRequestHandler(uriInfo, request, authToken);
 	}
 	
-	@POST
-	@Path("/user")
-	@Consumes(MediaType.APPLICATION_XML) 
-	@Produces(MediaType.TEXT_HTML)
-	public String userRequestAsHTML() {
-		
-		return "";
+	@Path("/product/{authToken}")
+	public Action userRequestAsHTML(@PathParam("product") String authToken) {
+		return new ProductRequestHandler(uriInfo, request, authToken);
 	}
 }

@@ -13,7 +13,11 @@ public class GenricServerResponse {
 	private String serverMessage;
 	private boolean success;
 	
+	public GenricServerResponse() {
+	}
+	
 	public GenricServerResponse(Integer httpCode, String httpMessage, String serverMessage, boolean success) {
+		this();
 		this.httpCode = httpCode;
 		this.httpMessage = httpMessage;
 		this.serverMessage = serverMessage;
