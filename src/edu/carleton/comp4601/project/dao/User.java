@@ -1,0 +1,95 @@
+package edu.carleton.comp4601.project.dao;
+
+import java.util.HashSet;
+import java.util.Map;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "user")
+@XmlAccessorType (XmlAccessType.FIELD)
+public class User {
+	private String id;
+	private String firstname;
+	private String lastname;
+	private String email;
+	private String passwordHash;
+	@XmlElement(name = "productIds")
+	private HashSet<String> productIds;
+	private long lastLoginTime;
+
+	public User() {
+		this.productIds = new HashSet<String>();
+	}
+
+	public User(String id) {
+		this();
+		this.setId(id);
+	}
+
+	@SuppressWarnings("unchecked")
+	public User(Map<?, ?> map) {
+		this();
+		this.setId((String) map.get("id"));
+		this.setFirstname((String) map.get("firstname"));
+		this.setLastname((String) map.get("lastname"));
+		this.setEmail((String) map.get("email"));
+		this.setPasswordHash((String) map.get("passwordhash"));
+		this.productIds = (HashSet<String>) map.get("productids");
+		this.setLastLoginTime((long) map.get("lastlogintime"));
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPasswordHash() {
+		return passwordHash;
+	}
+
+	public void setPasswordHash(String passwordHash) {
+		this.passwordHash = passwordHash;
+	}
+
+	public long getLastLoginTime() {
+		return lastLoginTime;
+	}
+
+	public void setLastLoginTime(long lastLoginTime) {
+		this.lastLoginTime = lastLoginTime;
+	}
+	
+	public void getLoginTimeAsDate() {
+		//TODO: Joda time ?
+	}
+}
