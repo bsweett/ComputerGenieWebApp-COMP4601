@@ -32,7 +32,7 @@ public class UserRequestHandler extends Action {
 	private String buildAuthToken(String email, String password, String time) throws UnsupportedEncodingException, NoSuchAlgorithmException {
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
 		md.update(password.getBytes("UTF-8"));
-		String hash = new String(md.digest());
+		String hash = new String(md.digest(), "UTF-8");
 		return email + "$" + hash + "$" + time;
 	}
 
