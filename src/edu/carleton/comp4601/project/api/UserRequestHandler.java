@@ -32,10 +32,23 @@ public class UserRequestHandler extends Action {
 	private String buildAuthToken(String email, String password, String time) throws UnsupportedEncodingException, NoSuchAlgorithmException {
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
 		md.update(password.getBytes("UTF-8"));
-		String hash = new String(md.digest(), "UTF-8");
+		
+		StringBuffer hexString = new StringBuffer();
+		byte[] hash = md.digest();
+
+        for (int i = 0; i < hash.length; i++) {
+            if ((0xff & hash[i]) < 0x10) {
+                hexString.append("0"
+                        + Integer.toHexString((0xFF & hash[i])));
+            } else {
+                hexString.append(Integer.toHexString(0xFF & hash[i]));
+            }
+        }
+ 
 		return email + "$" + hash + "$" + time;
 	}
-
+	
+	
 	
 	/**
 	 * Creates a new user account from the user XML posted. If a user is found with the same email/password pair
@@ -64,6 +77,8 @@ public class UserRequestHandler extends Action {
 		String email = u.getEmail();
 		String password = u.getPasswordHash();
 		String time = Long.toString(u.getLastLoginTime());
+		
+		System.out.println(password);
 
 		try {
 			String auth = buildAuthToken(email, password, time);
