@@ -78,6 +78,7 @@ public class UserRequestHandler extends Action {
 		String password = u.getPasswordHash();
 		String time = Long.toString(u.getLastLoginTime());
 		
+		System.out.println(email);
 		System.out.println(password);
 
 		try {
@@ -111,10 +112,12 @@ public class UserRequestHandler extends Action {
 	public User loginUserFromXML(@PathParam("email") String email, @PathParam("password") String password) {
 		User search = DatabaseManager.getInstance().findUserByPasswordEmail(email, password);
 		User updateUser = search;
-
-		System.out.println("Login user");
 		
+		System.out.println("Login user");
+		System.out.println(email);
+		System.out.println(password);
 		if(search == null) {
+			System.out.println("Here");
 			return null;
 		}
 				
@@ -126,6 +129,7 @@ public class UserRequestHandler extends Action {
 			updateUser.setAuthToken(auth);
 
 			if(DatabaseManager.getInstance().updateUser(updateUser, search)) {
+				System.out.println("Returning user");
 				return updateUser;
 			}
 		} catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {

@@ -121,7 +121,7 @@ public class DatabaseManager {
 		try {
 
 			BasicDBObject query = new BasicDBObject("email", email);
-			query.append("password", password);
+			query.append("passwordhash", password);
 			DBCollection col = getUserCollection();
 			DBObject result = col.findOne(query);
 
