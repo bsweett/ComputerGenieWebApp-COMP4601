@@ -14,7 +14,14 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
+import edu.carleton.comp4601.project.dao.Dimensions;
+import edu.carleton.comp4601.project.dao.GraphicsCard;
+import edu.carleton.comp4601.project.dao.Harddrive;
+import edu.carleton.comp4601.project.dao.InputOutput;
+import edu.carleton.comp4601.project.dao.Processor;
 import edu.carleton.comp4601.project.dao.Product;
+import edu.carleton.comp4601.project.dao.RAM;
+import edu.carleton.comp4601.project.dao.Screen;
 
 public class ProductIndexer {
 
@@ -52,27 +59,44 @@ public class ProductIndexer {
 		
 		IndexWriter writer = getIndexWriter(false);
 		
+		Dimensions dim = product.getDimensions();
+		Screen screen = product.getScreen();
+		Processor processor = product.getProcessor();
+		RAM ram = product.getRam();
+		Harddrive drive = product.getHarddrive();
+		InputOutput io = product.getIo();
+		GraphicsCard gCard = product.getGraphics();
+		
 		StringField[] fields = {
 				
 				// General
 				new StringField("id", product.getId().toString(), Field.Store.YES),
 				new StringField("title", product.getTitle(), Field.Store.YES),
-				new StringField("title", product.getTitle(), Field.Store.YES),
 				new StringField("retailer", product.getRetailer().toString(), Field.Store.YES),
 				new StringField("model", product.getModel(), Field.Store.YES),
 				new StringField("type", product.getType().toString(), Field.Store.YES),
-				
 				//Dimensions
-				//new StringField("", product.)
-				
+				new StringField("depth", dim.getDepth(), Field.Store.YES),
+				new StringField("width", dim.getWidth(), Field.Store.YES),
+				new StringField("height", dim.getHeight(), Field.Store.YES),
+				new StringField("weight", dim.getWeight(), Field.Store.YES),
 				//Screen
-				
+				new StringField("ScreenRes", screen.getScreenRes(), Field.Store.YES),
+				new StringField("screenSize", screen.getScreenSize(), Field.Store.YES),
+				new StringField("touch", screen.isTouchScreen(), Field.Store.YES),
 				//Processor
-				
+				new StringField("proBrand", processor.getBrand(), Field.Store.YES),
+				new StringField("cores", processor.getNumberOfCores(), Field.Store.YES),
+				new StringField("proType", processor.getProcessorType(), Field.Store.YES),
+				new StringField("proSpeed", processor.getSpeed(), Field.Store.YES),
 				//RAM
-				
+				new StringField("ramSize", ram.getMemorySize(), Field.Store.YES),
+				new StringField("ramType", ram.getType(), Field.Store.YES),
 				//Harddrive
-				
+				new StringField("space", drive.getCapacity(), Field.Store.YES),
+				new StringField("driveType", drive.getDriveType(), Field.Store.YES),
+				new StringField("speed", drive.getSpeed(), Field.Store.YES),
+				new StringField("dType", drive.getType(), Field.Store.YES),
 				//IO
 				
 				//Graphics
@@ -80,11 +104,6 @@ public class ProductIndexer {
 				//Other
 				
 		};
-		
-
-
-		
-
 		
 		Document doc = addAllStringsToDocument(fields);
 		
