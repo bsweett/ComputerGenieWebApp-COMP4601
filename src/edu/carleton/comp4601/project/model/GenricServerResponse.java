@@ -1,4 +1,4 @@
-package edu.carleton.comp4601.project.dao;
+package edu.carleton.comp4601.project.model;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

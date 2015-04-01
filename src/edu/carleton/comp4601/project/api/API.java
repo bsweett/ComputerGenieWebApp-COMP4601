@@ -36,13 +36,34 @@ public class API {
 				+ "</body></h1>" + "</html> ";
 	}
 	
+	@GET
+	@Path("/reset") 
+	@Produces(MediaType.TEXT_HTML)
+	public String resetWithHTML() {
+		
+		return "";
+	}
+	
+	@GET
+	@Path("/reset") 
+	@Produces(MediaType.APPLICATION_XML)
+	public String resetWithXML() {
+		
+		return "";
+	}
+	
 	@Path("/user/{authToken}")
 	public Action userRequestAsXML(@PathParam("authToken") String authToken) {		
 		return new UserRequestHandler(uriInfo, request, authToken);
 	}
 	
 	@Path("/product/{authToken}")
-	public Action userRequestAsHTML(@PathParam("product") String authToken) {
+	public Action productRequestAsXML(@PathParam("authToken") String authToken) {
 		return new ProductRequestHandler(uriInfo, request, authToken);
+	}
+	
+	@Path("/genie/{authToken}")
+	public Action genieRequestAsXML(@PathParam("authToken") String authToken) {
+		return new GenieRequestHandler(uriInfo, request, authToken);
 	}
 }

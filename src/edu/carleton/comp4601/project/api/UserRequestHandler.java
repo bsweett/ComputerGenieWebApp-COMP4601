@@ -19,9 +19,9 @@ import javax.ws.rs.core.Response;
 
 import org.joda.time.DateTime;
 
-import edu.carleton.comp4601.project.dao.GenricServerResponse;
 import edu.carleton.comp4601.project.dao.User;
 import edu.carleton.comp4601.project.datebase.DatabaseManager;
+import edu.carleton.comp4601.project.model.GenricServerResponse;
 
 public class UserRequestHandler extends Action {
 
