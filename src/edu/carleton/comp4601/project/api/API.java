@@ -12,6 +12,7 @@ import javax.ws.rs.core.Request;
 import javax.ws.rs.core.UriInfo;
 
 import edu.carleton.comp4601.project.dao.Product;
+import edu.carleton.comp4601.project.datebase.DatabaseManager;
 import edu.carleton.comp4601.project.index.ProductIndexer;
 
 @Path("/api")
@@ -50,7 +51,9 @@ public class API {
 	@Path("/reset") 
 	@Produces(MediaType.TEXT_HTML)
 	public String resetWithHTML() {
-
+		HashSet<Product> newPro = DatabaseManager.getInstance().getAllProducts();
+		this.indexer.updateProductSet(newPro);
+		
 		if(this.indexer.resetIndex()) {
 			return displayBasicHTMLWithTitle("Reset Complete");
 		}
@@ -62,6 +65,8 @@ public class API {
 	@Path("/reset") 
 	@Produces(MediaType.APPLICATION_XML)
 	public String resetWithXML() {
+		HashSet<Product> newPro = DatabaseManager.getInstance().getAllProducts();
+		this.indexer.updateProductSet(newPro);
 		
 		if(this.indexer.resetIndex()) {
 			return displayBasicXMLWithTitle("Reset Complete");

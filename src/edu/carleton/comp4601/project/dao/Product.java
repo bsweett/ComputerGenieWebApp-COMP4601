@@ -1,7 +1,5 @@
 package edu.carleton.comp4601.project.dao;
 
-import java.util.Map;
-
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
@@ -18,6 +16,7 @@ public class Product {
 	private String title;
 	private String imageSrc;
 	private String model;
+	private String url;
 	private long fetchedDate;
 	private ProductType type;
 	
@@ -64,7 +63,13 @@ public class Product {
 	private String os;
 	
 	public Product() {
+		this.model = "";
 		this.imageSrc = "";
+		this.os = "";
+		this.wifi = "";
+		this.bluetooth = "";
+		this.audioDescription = "";
+		this.batteryLife = "";
 	}
 	
 	public Product(String title, ProductType type, Screen screen, Processor processor, RAM ram, Harddrive drive, InputOutput io, Dimensions dim) {
@@ -76,18 +81,6 @@ public class Product {
 		setHarddrive(drive);
 		setIo(io);
 		setDimensions(dim);
-	}
-	
-	public Product(Map<?, ?> map) {
-		this();
-		//this.setId((String) map.get("id"));
-		this.setTitle((String) map.get("title"));
-		this.setModel((String) map.get("model"));
-		this.setFetchDate((long) map.get("releasedate"));
-		this.setType((ProductType) map.get("type"));
-		this.setDimensions((Dimensions) map.get("dimensions"));
-		
-		//TODO: Object mapping 
 	}
 	
 	public ObjectId getId() {
@@ -116,6 +109,14 @@ public class Product {
 
 	public void setModel(String model) {
 		this.model = model;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 	public long getFetchDate() {

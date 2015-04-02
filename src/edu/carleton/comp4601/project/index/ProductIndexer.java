@@ -34,6 +34,10 @@ public class ProductIndexer {
 		this.productSet = products;
 	}
 	
+	public void updateProductSet(HashSet<Product> products) {
+		this.productSet = products;
+	}
+	
 	public boolean resetIndex() {
 		try {
 			
@@ -68,7 +72,6 @@ public class ProductIndexer {
 		GraphicsCard gCard = product.getGraphics();
 		
 		StringField[] fields = {
-				
 				// General
 				new StringField("id", product.getId().toString(), Field.Store.YES),
 				new StringField("title", product.getTitle(), Field.Store.YES),
@@ -98,17 +101,31 @@ public class ProductIndexer {
 				new StringField("speed", drive.getSpeed(), Field.Store.YES),
 				new StringField("dType", drive.getType(), Field.Store.YES),
 				//IO
-				
+				new StringField("keyboard", io.getKeyboard(), Field.Store.YES),
+				new StringField("mouse", io.getMouse(), Field.Store.YES),
+				new StringField("speakers", io.getSpeakers(), Field.Store.YES),
+				new StringField("usb", io.getUSBPorts(), Field.Store.YES),
+				new StringField("dvi", io.isHasDVI(), Field.Store.YES),
+				new StringField("vga", io.isHasVGA(), Field.Store.YES),
+				new StringField("hdmi", io.isHasHDMI(), Field.Store.YES),
+				new StringField("webcam", io.isHasWebCam(), Field.Store.YES),
+				new StringField("firewire", io.getFirewire(),Field.Store.YES),
+				new StringField("remote", io.getRemote(),Field.Store.YES),
+				new StringField("other", io.getOther(),Field.Store.YES),
 				//Graphics
-				
+				new StringField("manufacturer", gCard.getManufacturer(),Field.Store.YES),
+				new StringField("gMemType", gCard.getMemoryType(),Field.Store.YES),
+				new StringField("gModel", gCard.getModel(),Field.Store.YES),
 				//Other
-				
+				new StringField("os", product.getOs(),Field.Store.YES),
+				new StringField("wifi", product.getWifi(),Field.Store.YES),
+				new StringField("audio", product.getAudioDescription(),Field.Store.YES),
+				new StringField("battery", product.getBatteryLife(), Field.Store.YES)
 		};
 		
 		Document doc = addAllStringsToDocument(fields);
 		
 		writer.addDocument(doc);
-		
 	}
 	
 	private Document addAllStringsToDocument(StringField[] fields) {
@@ -121,7 +138,6 @@ public class ProductIndexer {
 		return doc;
 	}
 				
-	
 	//Gets an instance of the indexWriter if it does not exist
 	private IndexWriter getIndexWriter(boolean create) throws IOException {
 		if (indexWriter == null) {

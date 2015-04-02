@@ -1,6 +1,7 @@
 package edu.carleton.comp4601.project.datebase;
 
 import java.net.UnknownHostException;
+import java.util.HashSet;
 
 import org.mongodb.morphia.Morphia;
 
@@ -8,6 +9,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
@@ -62,6 +64,30 @@ public class DatabaseManager {
 			col = db.createCollection("products", options);
 			return col;
 		}
+	}
+	
+	public HashSet<Product> getAllProducts() {
+		
+		HashSet<Product> hashSet = new HashSet<Product>();
+		
+		try {
+			DBCollection col = getProductCollection();
+			DBCursor cursor = col.find();
+			
+			while(cursor.hasNext()) {
+				DBObject obj = cursor.next();
+				Product product = this.morphia.fromDBObject(Product.class, obj);
+				if(product != null) {
+					hashSet.add(product);
+				}
+			}
+			return hashSet;
+			
+		} catch (MongoException e) {
+			System.out.println("MongoException: " + e.getLocalizedMessage());
+		}
+		
+		return null;
 	}
 
 	public boolean addNewProduct(Product product) {
