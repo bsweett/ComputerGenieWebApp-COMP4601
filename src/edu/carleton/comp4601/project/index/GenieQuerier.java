@@ -41,13 +41,13 @@ public class GenieQuerier {
 		titleQueries.add("title:" + request.getOs() + "~0.5");
 		
 		//Use
-		if(request.getUse() == "Business") {
+		if(request.getUse().equals("Business")) {
 			useEnum = Use.BUSINESS;
-		} else if(request.getUse() == "Gaming") {
+		} else if(request.getUse().equals("Gaming")) {
 			useEnum = Use.GAMING;
-		} else if(request.getUse() == "School") {
+		} else if(request.getUse().equals("School")) {
 			useEnum = Use.SCHOOL;
-		} else if(request.getUse() == "Leisure") {
+		} else if(request.getUse().equals("Leisure")) {
 			useEnum = Use.LEISURE;
 		}
 		
