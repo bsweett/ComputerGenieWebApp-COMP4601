@@ -1,7 +1,9 @@
 package edu.carleton.comp4601.project.index;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TopDocs;
@@ -40,8 +42,8 @@ public class GenieQuerier {
 		//=======================
 		
 		//Price range query
-		String lowerPrice;
-		String upperPrice;
+		String lowerPrice = "";
+		String upperPrice = "";
 		
 		if(request.getPrice() == 500) {
 			lowerPrice = "0";
@@ -62,7 +64,7 @@ public class GenieQuerier {
 		
 		
 		//Screen size query
-		String screenQuery;
+		String screenQuery = "";
 		
 		if(request.getScreen() == 13) {
 			screenQuery = "screenSize:11* OR " + "12* OR " + "13* OR " + "14* OR " + "15*";
@@ -79,7 +81,7 @@ public class GenieQuerier {
 		}
 		
 		//Minimum Memory Query
-		String memoryQuery;
+		String memoryQuery = "";
 		
 		if(request.getMemory() == 4) {
 			memoryQuery = "ramSize:4* OR " + "5* OR " + "6* OR " + "7*";
@@ -104,7 +106,7 @@ public class GenieQuerier {
 		}
 		
 		//Minimum HDD Query
-		String hddQuery;
+		String hddQuery = "";
 
 		if(request.getHdd() == 500) {
 			hddQuery = "space:5??* OR " + "6??* OR " + "7??* OR " + "8??* OR " + "9??*";
@@ -134,8 +136,19 @@ public class GenieQuerier {
 		}
 		
 		
-		SearchEngine searchEngine = new SearchEngine();
-		TopDocs topDocs = searchEngine.performSearch(queries, 6);
+		SearchEngine searchEngine;
+		try {
+			searchEngine = new SearchEngine();
+			TopDocs topDocs = searchEngine.performSearch(queries, 6);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 		
 //		String str = "foo bar";
