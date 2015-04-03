@@ -36,6 +36,8 @@ public class GenieRequestHandler extends Action {
 		ArrayList<String> productIds = querier.askGenie();
 		String[] productIdsArray = productIds.toArray(new String[productIds.size()]);
 		
+		System.out.println(productIdsArray[0]);
+		
 		ArrayList<Product> products = DatabaseManager.getInstance().findArrayOfProductsByIds(productIdsArray);
 		
 		GenieResponses responses = new GenieResponses();

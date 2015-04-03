@@ -27,19 +27,19 @@ public enum Use {
     
     public String memoryQuery() { 
     	if(memory == 4) {
-    		return "ramSize:*4gb* OR *5gb* OR *6gb* OR *7gb* OR *8gb* OR *\"4 gb\"* OR *\"5 gb\"* OR *\"6 gb\"* OR *\"7 gb\"* OR *\"8 gb\"*";
+    		return "ramSize:*4gb* OR ramSize:*5gb* OR ramSize:*6gb* OR ramSize:*7gb* OR ramSize:*8gb* OR ramSize:*\"4 gb\"* OR ramSize:*\"5 gb\"* OR ramSize:*\"6 gb\"* OR ramSize:*\"7 gb\"* OR ramSize:*\"8 gb\"*";
     	} else {
-    		return "ramSize:*8gb* OR *9gb* OR *10gb* OR *11gb* OR *12gb* OR *13gb* OR *14gb* OR *15gb* OR *16gb* OR *17gb* OR *18gb* OR *19gb* OR *2?gb* OR *3?gb* OR " 
-    				+ "*\"8 gb\"* OR *\"9 gb\"* OR *\"10 gb\"* OR *\"11 gb\"* OR *\"12 gb\"* OR *\"13 gb\"* OR *\"14 gb\"* OR *\"15 gb\"* OR " 
-    				+ "*\"16 gb\"* OR *\"17 gb\"* OR *\"18 gb\"* OR *\"19 gb\"* OR *\"2? gb\"* OR *\"3? gb\"*";
+    		return "ramSize:*8gb* OR ramSize:*9gb* OR ramSize:*10gb* OR ramSize:*11gb* OR ramSize:*12gb* OR ramSize:*13gb* OR ramSize:*14gb* OR ramSize:*15gb* OR ramSize:*16gb* OR ramSize:*17gb* OR ramSize:*18gb* OR ramSize:*19gb* OR ramSize:*2?gb* OR ramSize:*3?gb* OR " 
+    				+ "ramSize:*\"8 gb\"* OR ramSize:*\"9 gb\"* OR ramSize:*\"10 gb\"* OR ramSize:*\"11 gb\"* OR ramSize:*\"12 gb\"* OR ramSize:*\"13 gb\"* OR ramSize:*\"14 gb\"* OR ramSize:*\"15 gb\"* OR " 
+    				+ "ramSize:*\"16 gb\"* OR ramSize:*\"17 gb\"* OR ramSize:*\"18 gb\"* OR ramSize:*\"19 gb\"* OR ramSize:*\"2? gb\"* OR ramSize:*\"3? gb\"*";
     	}
     	
     }
     public String hddQuery() { 
     	if(hdd == 500) { 
-    		return "space:*5??* OR *6??* OR *7??* OR *8??* OR *9??* OR *1* OR *2*";
+    		return "space:*5??* OR space:*6??* OR space:*7??* OR space:*8??* OR space:*9??* OR space:*1* OR space:*2*";
     	} else {
-    		return "space:*1* OR *2* OR *3* OR *4* OR *5* OR *6*";
+    		return "space:*1* OR space:*2* OR space:*3* OR space:*4* OR space:*5* OR space:*6*";
     	} 
     }
     public String processorSpeedQuery() { 
@@ -48,7 +48,7 @@ public enum Use {
     	} else if(processorSpeed == 2.0) {
     		return "proSpeed:*2.*";
     	} else {
-    		return "proSpeed:*2.* OR *3.*";
+    		return "proSpeed:*2.* OR proSpeed:*3.*";
     	}
     }
     public String quadCoreQuery() { 
