@@ -1,6 +1,7 @@
 package edu.carleton.comp4601.project.datebase;
 
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import org.mongodb.morphia.Morphia;
@@ -13,6 +14,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
+import com.mongodb.QueryBuilder;
 
 import edu.carleton.comp4601.project.dao.Product;
 import edu.carleton.comp4601.project.dao.User;
@@ -116,6 +118,31 @@ public class DatabaseManager {
 		}
 
 		return true; 
+	}
+	
+	public ArrayList<Product> findArrayOfProductsByIds(String[] ids) {
+		
+		ArrayList<Product> list = new ArrayList<Product>();
+		
+		try {
+			DBCollection col = getProductCollection();
+			DBObject query = QueryBuilder.start("_id").in(ids).get();
+			DBCursor cursor = col.find(query);
+			
+			while(cursor.hasNext()) {
+				DBObject obj = cursor.next();
+				Product product = this.morphia.fromDBObject(Product.class, obj);
+				if(product != null) {
+					list.add(product);
+				}
+			}
+			return list;
+			
+		} catch (MongoException e) {
+			System.out.println("MongoException: " + e.getLocalizedMessage());
+		}
+		
+		return list;
 	}
 
 	public Product removeProduct(String id) {	
