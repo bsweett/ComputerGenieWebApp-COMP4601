@@ -41,6 +41,7 @@ public class GenieRequestHandler extends Action {
 		GenieResponses responses = new GenieResponses();
 		
 		for(Product p : products) {
+			System.out.println("Found a product: " + p.getId().toString());
 			GenieResponse gr = new GenieResponse(p.getId().toString(), p.getTitle(), p.getUrl(), p.getImageSrc(), Float.parseFloat(p.getPrice()), p.getRetailer().name());
 			responses.addResponse(gr);
 		}
