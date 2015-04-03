@@ -70,6 +70,14 @@ public class Product {
 		this.bluetooth = "";
 		this.audioDescription = "";
 		this.batteryLife = "";
+		
+		this.processor = new Processor();
+		this.graphics = new GraphicsCard();
+		this.harddrive = new Harddrive();
+		this.io = new InputOutput();
+		this.dimensions = new Dimensions();
+		this.ram = new RAM();
+		this.screen = new Screen();
 	}
 	
 	public Product(String title, ProductType type, Screen screen, Processor processor, RAM ram, Harddrive drive, InputOutput io, Dimensions dim) {
