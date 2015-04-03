@@ -86,8 +86,8 @@ public class GenieQuerier {
 		}
 		
 		
-		queries.add("price:[" + lowerPrice + "TO" + upperPrice + "]"); 
-		titleQueries.add("price:[" + lowerPrice + "TO" + upperPrice + "]");
+		queries.add("price:[" + lowerPrice + " TO " + upperPrice + "]"); 
+		titleQueries.add("price:[" + lowerPrice + " TO " + upperPrice + "]");
 		
 		//Screen size query
 		String screenQuery = "";
