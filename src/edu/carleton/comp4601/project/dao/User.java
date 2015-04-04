@@ -28,7 +28,7 @@ public class User {
 	
 	@XmlElement(name = "productIds")
 	private HashSet<String> productIds;
-
+	
 	public User() {
 		this.productIds = new HashSet<String>();
 	}

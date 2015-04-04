@@ -181,7 +181,7 @@ public class UserRequestHandler extends Action {
 		
 		if(search == null) {
 			// They are not authorized to use the application
-			res = Response.serverError().build();
+			res = Response.status(401).build();
 			return new GenricServerResponse(res.getStatus(), "", "Not Authorized", false);
 		}
 		
@@ -193,4 +193,31 @@ public class UserRequestHandler extends Action {
 		res = Response.serverError().build();
 		return new GenricServerResponse(res.getStatus(), "", "User not found", false);
 	}
+	
+	@POST
+	@Path("/update")
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_XML)
+	public GenricServerResponse updateUserFromXML(JAXBElement<User> user) {
+		User search = DatabaseManager.getInstance().findUserByToken(super.authToken);
+		User newUser = user.getValue();
+		Response res = null;
+		
+		System.out.println("Update user");
+		
+		if(search == null) {
+			// They are not authorized to use the application
+			res = Response.status(401).build();
+			return new GenricServerResponse(res.getStatus(), "", "Not Authorized", false);
+		}
+		
+		if(DatabaseManager.getInstance().updateUser(newUser, search)) {
+			res = Response.ok().build();
+			return new GenricServerResponse(res.getStatus(), "", "Ok", true);
+		}
+		
+		res = Response.serverError().build();
+		return new GenricServerResponse(res.getStatus(), "", "User not found", false);
+	}
+	
  }

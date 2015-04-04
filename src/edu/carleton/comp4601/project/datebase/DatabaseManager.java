@@ -17,6 +17,7 @@ import com.mongodb.MongoException;
 import com.mongodb.QueryBuilder;
 
 import edu.carleton.comp4601.project.dao.Product;
+import edu.carleton.comp4601.project.dao.Review;
 import edu.carleton.comp4601.project.dao.User;
 
 public class DatabaseManager {
@@ -43,6 +44,7 @@ public class DatabaseManager {
 		try {
 			this.morphia = new Morphia();
 			this.morphia.map(Product.class);
+			this.morphia.map(Review.class);
 			
 			this.mongoClient = new MongoClient( "localhost" );
 			setDatabase(this.mongoClient.getDB( "computergenie" ));
@@ -84,6 +86,24 @@ public class DatabaseManager {
 				}
 			}
 			return hashSet;
+			
+		} catch (MongoException e) {
+			System.out.println("MongoException: " + e.getLocalizedMessage());
+		}
+		
+		return hashSet;
+	}
+	
+	public Product getProductById(String id) {
+		
+		try {
+			BasicDBObject query = new BasicDBObject("id", id);
+			DBCollection col = getProductCollection();
+			DBObject result = col.findOne(query);
+			
+			if(result != null) {
+				return this.morphia.fromDBObject(Product.class, result);
+			}
 			
 		} catch (MongoException e) {
 			System.out.println("MongoException: " + e.getLocalizedMessage());
@@ -301,6 +321,117 @@ public class DatabaseManager {
 	public int getUserCollectionSize() {
 		DBCollection col = this.getUserCollection();
 		return (int) col.getCount();
+	}
+	
+	// Reviews
+	
+	public DBCollection getReviewCollection() {
+
+		DBCollection col;
+
+		if (db.collectionExists("reviews")) {
+			col = db.getCollection("reviews");
+			return col;
+		} else {
+			DBObject options = BasicDBObjectBuilder.start().add("capped", false).add("size", 2000000000l).get();
+			col = db.createCollection("reviews", options);
+			return col;
+		}
+	}
+	
+	/**
+	 * Add a new review object to the DB
+	 * 
+	 * @param review
+	 * @return
+	 */
+	public boolean addNewReview(Review review) {
+
+		try {
+			DBCollection col = getProductCollection();
+			col.insert(this.morphia.toDBObject(review));
+			
+		} catch (MongoException e) {
+			System.out.println("MongoException: " + e.getLocalizedMessage());
+			return false;
+		}
+
+		return true; 	
+	}
+	
+	public Review getReviewByUserIdForProductId(String userId, String productId) {
+		
+		try {
+			BasicDBObject query = new BasicDBObject("userId", userId);
+			query.append("productId", productId);
+			DBCollection col = getReviewCollection();
+			DBObject result = col.findOne(query);
+			
+			if(result != null) {
+				return this.morphia.fromDBObject(Review.class, result);
+			}
+			
+		} catch (MongoException e) {
+			System.out.println("MongoException: " + e.getLocalizedMessage());
+		}
+
+		return null;
+	}
+	
+	/**
+	 * Gets all the reviews with a given userId
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	public ArrayList<Review> getReviewsByUserId(String userId) {
+		
+		ArrayList<Review> arrayList = new ArrayList<Review>();
+		
+		try {
+			BasicDBObject query = new BasicDBObject("userId", userId);
+			DBCollection col = getReviewCollection();
+			DBCursor cursor = col.find(query);
+			
+			while(cursor.hasNext()) {
+				DBObject obj = cursor.next();
+				Review review = this.morphia.fromDBObject(Review.class, obj);
+				if(review != null) {
+					arrayList.add(review);
+				}
+			}
+			return arrayList;
+			
+		} catch (MongoException e) {
+			System.out.println("MongoException: " + e.getLocalizedMessage());
+		}
+		
+		return arrayList;
+	}
+	
+	public ArrayList<Review> getReviewsByProductId(String productId) {
+		
+		ArrayList<Review> arrayList = new ArrayList<Review>();
+		
+		try {
+			BasicDBObject query = new BasicDBObject("productId", productId);
+			DBCollection col = getReviewCollection();
+			DBCursor cursor = col.find(query);
+			
+			while(cursor.hasNext()) {
+				DBObject obj = cursor.next();
+				Review review = this.morphia.fromDBObject(Review.class, obj);
+				if(review != null) {
+					arrayList.add(review);
+				}
+			}
+			return arrayList;
+			
+		} catch (MongoException e) {
+			System.out.println("MongoException: " + e.getLocalizedMessage());
+		}
+		
+		return arrayList;
 	}
 
 	public static DatabaseManager getInstance() {
