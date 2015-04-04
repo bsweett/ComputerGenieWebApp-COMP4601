@@ -32,11 +32,16 @@ public class SearchEngine {
 			throws IOException, ParseException {
 		
 		BooleanQuery booleanQuery = new BooleanQuery();
-		
-		for(String queryString : queryStrings) {
-			parser.setAllowLeadingWildcard(true);
-			Query query = parser.parse(queryString);
-			booleanQuery.add(query, BooleanClause.Occur.MUST);
+		parser.setAllowLeadingWildcard(true);
+		for(String queryString : queryStrings) {	
+			
+			if(queryString.contains("ssd") || queryString.contains("memoryCap") || queryString.contains("space")) {
+				Query query = parser.parse(queryString);
+				booleanQuery.add(query, BooleanClause.Occur.SHOULD);
+			} else {
+				Query query = parser.parse(queryString);
+				booleanQuery.add(query, BooleanClause.Occur.MUST);
+			}
 		}
 		
 		return searcher.search(booleanQuery, n);

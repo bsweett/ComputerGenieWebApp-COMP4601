@@ -67,7 +67,7 @@ public class GenieQuerier {
 		
 		// TODO: Need a better way to parse video memory, killing results
 		if(useEnum.videoMemQuery() != null) {
-			//queries.add(useEnum.videoMemQuery());
+			queries.add(useEnum.videoMemQuery());
 		}
 		
 		//Price range query
@@ -166,8 +166,8 @@ public class GenieQuerier {
 			
 		// TODO: Need a better way to parse SSD, killing results
 		if(request.isSsd() || useEnum.ssd()) {
-			//titleQueries.add("title:*ssd*");
-			//queries.add("title:*ssd*");
+			titleQueries.add("title:*ssd*");
+			queries.add("title:*ssd*");
 		}
 	
 		SearchEngine searchEngine;
