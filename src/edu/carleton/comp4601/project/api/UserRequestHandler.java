@@ -3,6 +3,7 @@ package edu.carleton.comp4601.project.api;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -19,9 +20,11 @@ import javax.ws.rs.core.Response;
 
 import org.joda.time.DateTime;
 
+import edu.carleton.comp4601.project.dao.Review;
 import edu.carleton.comp4601.project.dao.User;
 import edu.carleton.comp4601.project.datebase.DatabaseManager;
 import edu.carleton.comp4601.project.model.GenricServerResponse;
+import edu.carleton.comp4601.project.model.StatResponse;
 
 public class UserRequestHandler extends Action {
 
@@ -218,6 +221,31 @@ public class UserRequestHandler extends Action {
 		
 		res = Response.serverError().build();
 		return new GenricServerResponse(res.getStatus(), "", "User not found", false);
+	}
+	
+	@GET
+	@Path("/stats")
+	@Produces(MediaType.APPLICATION_XML)
+	public StatResponse getStatsForUserAsXML() {
+		
+		User userSearch = DatabaseManager.getInstance().findUserByToken(super.authToken);
+
+		if(userSearch == null) {
+			return null;
+		}
+		
+		ArrayList<Review> results = DatabaseManager.getInstance().getReviewsByUserId(userSearch.getId());
+		
+		int total = results.size();
+		int upvotes = 0;		
+		int downvotes = 0;
+		
+		for(Review r : results) {
+			upvotes += r.getUpScore();
+			downvotes += r.getDownScore();
+		}
+		
+		return new StatResponse(upvotes,downvotes,total);
 	}
 	
  }

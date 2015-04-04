@@ -68,7 +68,7 @@ public class ProductRequestHandler extends Action {
 		Review review = rev.getValue();
 		Response res = null;
 
-		if(review.getContent() != "" && review.getOpinion() != null && review.getScore() != null && review.getUserId() != "" 
+		if(review.getContent() != "" && review.getOpinion() != null && review.getUpScore() != null && review.getDownScore() != null && review.getUserId() != "" 
 				&& review.getProductId() != "") {
 			User userSearch = DatabaseManager.getInstance().findUserByToken(super.authToken);
 			

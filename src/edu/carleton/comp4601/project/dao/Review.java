@@ -21,11 +21,20 @@ public class Review {
 	private String userName;
 	private String content;
 	private Opinion opinion;
-	private Integer score;
+	private Integer upScore;
+	private Integer downScore;
 	private long date;
 	
 	public Review() {
 		
+	}
+	
+	public ObjectId getId() {
+		return id;
+	}
+
+	public void setId(ObjectId id) {
+		this.id = id;
 	}
 
 	public String getProductId() {
@@ -60,20 +69,28 @@ public class Review {
 		this.content = content;
 	}
 
+	public Integer getUpScore() {
+		return upScore;
+	}
+
+	public void setUpScore(Integer upScore) {
+		this.upScore = upScore;
+	}
+
+	public Integer getDownScore() {
+		return downScore;
+	}
+
+	public void setDownScore(Integer downScore) {
+		this.downScore = downScore;
+	}
+
 	public Opinion getOpinion() {
 		return opinion;
 	}
 
 	public void setOpinion(Opinion opinion) {
 		this.opinion = opinion;
-	}
-
-	public Integer getScore() {
-		return score;
-	}
-
-	public void setScore(Integer score) {
-		this.score = score;
 	}
 
 	public long getDate() {
