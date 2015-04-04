@@ -79,6 +79,7 @@ public class ProductIndexer {
 				new StringField("retailer", product.getRetailer().toString(), Field.Store.YES),
 				new StringField("model", product.getModel(), Field.Store.YES),
 				new StringField("type", product.getType().toString(), Field.Store.YES),
+				new StringField("price", product.getPrice(), Field.Store.YES),
 				//Dimensions
 				new StringField("depth", dim.getDepth(), Field.Store.YES),
 				new StringField("width", dim.getWidth(), Field.Store.YES),
@@ -126,7 +127,6 @@ public class ProductIndexer {
 		};
 		
 		Document doc = addAllStringsToDocument(fields);
-		doc.add(new DoubleField("price", Double.parseDouble(product.getPrice()), Field.Store.YES));
 		
 		writer.addDocument(doc);
 	}

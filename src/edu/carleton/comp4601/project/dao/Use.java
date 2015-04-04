@@ -62,7 +62,7 @@ public enum Use {
     	if(screenResolution == 0) {
     		return null;
     	} else {
-    		return "ScreenRes:*" + Integer.toString(screenResolution) + "*";
+    		return "ScreenRes:*\"1920 x 1080\"*";
     	}
     }
     public String videoMemQuery() {

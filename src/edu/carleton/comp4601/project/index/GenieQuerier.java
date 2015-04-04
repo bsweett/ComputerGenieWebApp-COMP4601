@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 
@@ -60,12 +61,13 @@ public class GenieQuerier {
 			queries.add(useEnum.quadCoreQuery());
 		}
 		
-		if(useEnum.screenResolutionQuery() != null && request.getForm().toLowerCase() != "desktop") {
+		if(useEnum.screenResolutionQuery() != null && !request.getForm().toLowerCase().equals("desktop")) {
 			queries.add(useEnum.screenResolutionQuery());
 		}
 		
+		// TODO: Need a better way to parse video memory, killing results
 		if(useEnum.videoMemQuery() != null) {
-			queries.add(useEnum.videoMemQuery());
+			//queries.add(useEnum.videoMemQuery());
 		}
 		
 		//Price range query
@@ -73,19 +75,18 @@ public class GenieQuerier {
 		String upperPrice = "";
 		
 		if(request.getPrice() == 500) {
-			lowerPrice = "0";
-			upperPrice = "500";
+			lowerPrice = "0.00";
+			upperPrice = "500.00";
 		} else if(request.getPrice() == 1000) {
-			lowerPrice = "501";
-			upperPrice = "1000";
+			lowerPrice = "500.01";
+			upperPrice = "1000.00";
 		} else if(request.getPrice() == 2000) {
-			lowerPrice = "1001";
-			upperPrice = "2000";
+			lowerPrice = "1000.01";
+			upperPrice = "2000.00";
 		} else if(request.getPrice() == 5000) {
-			lowerPrice = "2001";
-			upperPrice = "5000";
+			lowerPrice = "2000.01";
+			upperPrice = "5000.00";
 		}
-		
 		
 		queries.add("price:[" + lowerPrice + " TO " + upperPrice + "]"); 
 		titleQueries.add("price:[" + lowerPrice + " TO " + upperPrice + "]");
@@ -129,7 +130,7 @@ public class GenieQuerier {
 		}
 		
 		if(useEnum.memory() > request.getMemory()) {
-			//titleQueries.add(useEnum.memoryQuery().replaceAll("ramSize", "title"));
+			titleQueries.add(useEnum.memoryQuery().replaceAll("ramSize", "title"));
 			queries.add(useEnum.memoryQuery());
 		} else if(request.getMemory() != 0) {
 			queries.add(memoryQuery);
@@ -157,16 +158,16 @@ public class GenieQuerier {
 		}
 		
 		if(useEnum.hdd() > request.getHdd()) {
-			//titleQueries.add(useEnum.hddQuery().replaceAll("space", "title"));
+			titleQueries.add(useEnum.hddQuery().replaceAll("space", "title"));
 			queries.add(useEnum.hddQuery());
 		} else if(request.getHdd() != 0) {
 			queries.add(hddQuery);
 		}
 			
-		//For SSD check us dType:
+		// TODO: Need a better way to parse SSD, killing results
 		if(request.isSsd() || useEnum.ssd()) {
 			//titleQueries.add("title:*ssd*");
-			queries.add("title:*ssd*");
+			//queries.add("title:*ssd*");
 		}
 	
 		SearchEngine searchEngine;
@@ -174,7 +175,7 @@ public class GenieQuerier {
 			searchEngine = new SearchEngine();
 			TopDocs topDocs = searchEngine.performSearch(queries, 6);
 			productIds.addAll(getProductIdsFromHits(topDocs.scoreDocs, searchEngine));
-			
+			System.out.println("With full query we found: " + productIds.size());
 			if(productIds.size() < 3) {
 				System.out.println("Could not find more than 3 objects with full query, resorting to title");
 				searchEngine = new SearchEngine();
