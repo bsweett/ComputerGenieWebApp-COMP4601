@@ -15,7 +15,6 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
-import com.mongodb.QueryBuilder;
 
 import edu.carleton.comp4601.project.dao.Product;
 import edu.carleton.comp4601.project.dao.Review;

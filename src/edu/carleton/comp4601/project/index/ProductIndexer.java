@@ -6,6 +6,7 @@ import java.util.HashSet;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.document.DoubleField;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.index.IndexWriter;
@@ -125,6 +126,7 @@ public class ProductIndexer {
 		};
 		
 		Document doc = addAllStringsToDocument(fields);
+		doc.add(new DoubleField("price", Double.parseDouble(product.getPrice()), Field.Store.YES));
 		
 		writer.addDocument(doc);
 	}
