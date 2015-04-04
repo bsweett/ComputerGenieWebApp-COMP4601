@@ -112,21 +112,21 @@ public class GenieQuerier {
 		String memoryQuery = "";
 		
 		if(request.getMemory() == 4) {
-			memoryQuery = "ramSize:*4gb* OR ramSize:*5gb* OR ramSize:*6gb* OR ramSize:*7gb* OR ramSize:*\"4 gb\"* OR ramSize:*\"5 gb\"* OR ramSize:*\"6 gb\"* OR ramSize:*\"7 gb\"*";
+			memoryQuery = "ramSize:*4* OR ramSize:*5* OR ramSize:*6* OR ramSize:*7*";
 		} else if(request.getMemory() == 8) {
-			memoryQuery = "ramSize:*8gb* OR ramSize:*9gb* OR ramSize:*10gb* OR ramSize:*11gb* OR ramSize:*\"8 gb\"* OR ramSize:*\"9 gb\"* OR ramSize:*\"10 gb\"* OR ramSize:*\"11 gb\"*";
+			memoryQuery = "ramSize:*8* OR ramSize:*9* OR ramSize:*10* OR ramSize:*11*";
 		} else if(request.getMemory() == 12) {
-			memoryQuery = "ramSize:*12gb* OR ramSize:*13gb* OR ramSize:*14gb* OR ramSize:*15gb* OR ramSize:*\"12 gb\"* OR ramSize:*\"13 gb\"* OR ramSize:*\"14 gb\"* OR ramSize:*\"15 gb\"*";
+			memoryQuery = "ramSize:*12* OR ramSize:*13* OR ramSize:*14* OR ramSize:*15*";
 		} else if(request.getMemory() == 16) {
-			memoryQuery = "ramSize:*16gb* OR ramSize:*17gb* OR ramSize:*18gb* OR ramSize:*19gb* OR ramSize:*\"16 gb\"* OR ramSize:*\"17 gb\"* OR ramSize:*\"18 gb\"* OR ramSize:*\"19 gb\"*";
+			memoryQuery = "ramSize:*16* OR ramSize:*17* OR ramSize:*18* OR ramSize:*19*";
 		} else if(request.getMemory() == 20) {
-			memoryQuery = "ramSize:*20gb* OR ramSize:*21gb* OR ramSize:*22gb* OR ramSize:*23gb* OR ramSize:*\"20 gb\"* OR ramSize:*\"21 gb\"* OR ramSize:*\"22 gb\"* OR ramSize:*\"23 gb\"*";
+			memoryQuery = "ramSize:*20* OR ramSize:*21* OR ramSize:*22* OR ramSize:*23*";
 		} else if(request.getMemory() == 24) {
-			memoryQuery = "ramSize:*24gb* OR ramSize:*25gb* OR ramSize:*26gb* OR ramSize:*27gb* OR ramSize:*\"24 gb\"* OR ramSize:*\"25 gb\"* OR ramSize:*\"26 gb\"* OR ramSize:*\"27 gb\"*";
+			memoryQuery = "ramSize:*24* OR ramSize:*25* OR ramSize:*26* OR ramSize:*27*";
 		} else if(request.getMemory() == 28) {
-			memoryQuery = "ramSize:*28gb* OR ramSize:*29gb* OR ramSize:*30gb* OR ramSize:*31gb* OR ramSize:*\"28 gb\"* OR ramSize:*\"29 gb\"* OR ramSize:*\"30 gb\"* OR ramSize:*\"31 gb\"*";
+			memoryQuery = "ramSize:*28* OR ramSize:*29* OR ramSize:*30* OR ramSize:*31*";
 		} else if(request.getMemory() == 32) {
-			memoryQuery = "ramSize:*32gb* OR ramSize:*33gb* OR ramSize:*34gb* OR ramSize:*35gb* OR ramSize:*\"33 gb\"* OR ramSize:*\"34 gb\"* OR ramSize:*\"35 gb\"* OR ramSize:*\"36 gb\"*";
+			memoryQuery = "ramSize:*32* OR ramSize:*33* OR ramSize:*34* OR ramSize:*35*";
 		}
 		
 		if(useEnum.memory() > request.getMemory()) {

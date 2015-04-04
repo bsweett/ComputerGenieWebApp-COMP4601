@@ -27,11 +27,9 @@ public enum Use {
     
     public String memoryQuery() { 
     	if(memory == 4) {
-    		return "ramSize:*4gb* OR ramSize:*5gb* OR ramSize:*6gb* OR ramSize:*7gb* OR ramSize:*8gb* OR ramSize:*\"4 gb\"* OR ramSize:*\"5 gb\"* OR ramSize:*\"6 gb\"* OR ramSize:*\"7 gb\"* OR ramSize:*\"8 gb\"*";
+    		return "ramSize:*4* OR ramSize:*5* OR ramSize:*6* OR ramSize:*7* OR ramSize:*8*";
     	} else {
-    		return "ramSize:*8gb* OR ramSize:*9gb* OR ramSize:*10gb* OR ramSize:*11gb* OR ramSize:*12gb* OR ramSize:*13gb* OR ramSize:*14gb* OR ramSize:*15gb* OR ramSize:*16gb* OR ramSize:*17gb* OR ramSize:*18gb* OR ramSize:*19gb* OR ramSize:*2?gb* OR ramSize:*3?gb* OR " 
-    				+ "ramSize:*\"8 gb\"* OR ramSize:*\"9 gb\"* OR ramSize:*\"10 gb\"* OR ramSize:*\"11 gb\"* OR ramSize:*\"12 gb\"* OR ramSize:*\"13 gb\"* OR ramSize:*\"14 gb\"* OR ramSize:*\"15 gb\"* OR " 
-    				+ "ramSize:*\"16 gb\"* OR ramSize:*\"17 gb\"* OR ramSize:*\"18 gb\"* OR ramSize:*\"19 gb\"* OR ramSize:*\"2? gb\"* OR ramSize:*\"3? gb\"*";
+    		return "ramSize:*8* OR ramSize:*9* OR ramSize:*10* OR ramSize:*11* OR ramSize:*12* OR ramSize:*13* OR ramSize:*14* OR ramSize:*15* OR ramSize:*16* OR ramSize:*17* OR ramSize:*18* OR ramSize:*19* OR ramSize:*2?* OR ramSize:*3?*";
     	}
     	
     }
@@ -62,7 +60,7 @@ public enum Use {
     	if(screenResolution == 0) {
     		return null;
     	} else {
-    		return "ScreenRes:*\"1920 x 1080\"*";
+    		return "ScreenRes:*1920*";
     	}
     }
     public String videoMemQuery() {
