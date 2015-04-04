@@ -116,6 +116,7 @@ public class ProductIndexer {
 				new StringField("manufacturer", gCard.getManufacturer(),Field.Store.YES),
 				new StringField("gMemType", gCard.getMemoryType(),Field.Store.YES),
 				new StringField("gModel", gCard.getModel(),Field.Store.YES),
+				new StringField("memoryCap", gCard.getModel(),Field.Store.YES),
 				//Other
 				new StringField("os", product.getOs(),Field.Store.YES),
 				new StringField("wifi", product.getWifi(),Field.Store.YES),

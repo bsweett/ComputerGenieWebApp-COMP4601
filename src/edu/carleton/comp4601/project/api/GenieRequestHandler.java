@@ -36,11 +36,14 @@ public class GenieRequestHandler extends Action {
 		ArrayList<String> productIds = querier.askGenie();
 		String[] productIdsArray = productIds.toArray(new String[productIds.size()]);
 		
+		System.out.println(productIdsArray[0]);
+		
 		ArrayList<Product> products = DatabaseManager.getInstance().findArrayOfProductsByIds(productIdsArray);
 		
 		GenieResponses responses = new GenieResponses();
 		
 		for(Product p : products) {
+			System.out.println("Found a product: " + p.getId().toString());
 			GenieResponse gr = new GenieResponse(p.getId().toString(), p.getTitle(), p.getUrl(), p.getImageSrc(), Float.parseFloat(p.getPrice()), p.getRetailer().name());
 			responses.addResponse(gr);
 		}

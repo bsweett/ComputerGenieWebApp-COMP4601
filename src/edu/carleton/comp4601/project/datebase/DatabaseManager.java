@@ -156,6 +156,7 @@ public class DatabaseManager {
 					list.add(product);
 				}
 			}
+			System.out.println(list.size());
 			return list;
 			
 		} catch (MongoException e) {

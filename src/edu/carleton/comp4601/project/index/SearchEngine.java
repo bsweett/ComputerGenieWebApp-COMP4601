@@ -34,6 +34,7 @@ public class SearchEngine {
 		BooleanQuery booleanQuery = new BooleanQuery();
 		
 		for(String queryString : queryStrings) {
+			parser.setAllowLeadingWildcard(true);
 			Query query = parser.parse(queryString);
 			booleanQuery.add(query, BooleanClause.Occur.MUST);
 		}

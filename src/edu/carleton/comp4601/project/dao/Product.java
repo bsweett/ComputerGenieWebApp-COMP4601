@@ -102,7 +102,7 @@ public class Product {
 	}
 
 	public String getTitle() {
-		return title;
+		return title.toLowerCase();
 	}
 
 	public void setTitle(String title) {
@@ -110,7 +110,7 @@ public class Product {
 	}
 
 	public String getImageSrc() {
-		return imageSrc;
+		return imageSrc.toLowerCase();
 	}
 
 	public void setImageSrc(String imageSrc) {
@@ -118,7 +118,7 @@ public class Product {
 	}
 
 	public String getModel() {
-		return model;
+		return model.toLowerCase();
 	}
 
 	public void setModel(String model) {
@@ -126,7 +126,7 @@ public class Product {
 	}
 
 	public String getUrl() {
-		return url;
+		return url.toLowerCase();
 	}
 
 	public void setUrl(String url) {
@@ -158,7 +158,7 @@ public class Product {
 	}
 
 	public String getBatteryLife() {
-		return batteryLife;
+		return batteryLife.toLowerCase();
 	}
 
 	public void setBatteryLife(String batteryLife) {
@@ -198,7 +198,7 @@ public class Product {
 	}
 
 	public String getAudioDescription() {
-		return audioDescription;
+		return audioDescription.toLowerCase();
 	}
 
 	public void setAudioDescription(String audioDescription) {
@@ -206,7 +206,7 @@ public class Product {
 	}
 	
 	public String getBluetooth() {
-		return bluetooth;
+		return bluetooth.toLowerCase();
 	}
 
 	public void setBluetooth(String bluetooth) {
@@ -214,7 +214,7 @@ public class Product {
 	}
 
 	public String getWifi() {
-		return wifi;
+		return wifi.toLowerCase();
 	}
 
 	public void setWifi(String wifi) {
@@ -230,7 +230,7 @@ public class Product {
 	}
 
 	public String getPrice() {
-		return price;
+		return price.toLowerCase();
 	}
 
 	public void setPrice(String price) {
@@ -238,7 +238,7 @@ public class Product {
 	}
 	
 	public String getOs() {
-		return os;
+		return os.toLowerCase();
 	}
 
 	public void setOs(String os) {
