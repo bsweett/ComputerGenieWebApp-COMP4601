@@ -34,11 +34,14 @@ public class GenieRequestHandler extends Action {
 		GenieQuerier querier = new GenieQuerier(genie);
 		
 		ArrayList<String> productIds = querier.askGenie();
-		String[] productIdsArray = productIds.toArray(new String[productIds.size()]);
 		
-		System.out.println(productIdsArray[0]);
+		ArrayList<Product> products = new ArrayList<Product>();
 		
-		ArrayList<Product> products = DatabaseManager.getInstance().findArrayOfProductsByIds(productIdsArray);
+		for(String pid : productIds) {
+			Product p = DatabaseManager.getInstance().getProductById(pid);
+			products.add(p);
+		}
+		
 		
 		GenieResponses responses = new GenieResponses();
 		

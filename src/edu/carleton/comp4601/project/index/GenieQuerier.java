@@ -88,7 +88,7 @@ public class GenieQuerier {
 		
 		
 		queries.add("price:[" + lowerPrice + " TO " + upperPrice + "]"); 
-		//titleQueries.add("price:[" + lowerPrice + " TO " + upperPrice + "]");
+		titleQueries.add("price:[" + lowerPrice + " TO " + upperPrice + "]");
 		
 		//Screen size query
 		String screenQuery = "";
@@ -165,7 +165,7 @@ public class GenieQuerier {
 			
 		//For SSD check us dType:
 		if(request.isSsd() || useEnum.ssd()) {
-			//titleQueries.add("title:SSD~0.8");
+			//titleQueries.add("title:*ssd*");
 			queries.add("title:*ssd*");
 		}
 	
@@ -176,7 +176,7 @@ public class GenieQuerier {
 			productIds.addAll(getProductIdsFromHits(topDocs.scoreDocs, searchEngine));
 			
 			if(productIds.size() < 3) {
-				System.out.println("Testing");
+				System.out.println("Could not find more than 3 objects with full query, resorting to title");
 				searchEngine = new SearchEngine();
 				TopDocs topDocs2 = searchEngine.performSearch(titleQueries, 6);
 				productIds.addAll(getProductIdsFromHits(topDocs2.scoreDocs, searchEngine));
@@ -198,7 +198,6 @@ public class GenieQuerier {
 		for (int i = 0; i < hits.length; i++) {
 			Document doc = searchEngine.getDocument(hits[i].doc);
 			productIds.add(doc.get("id"));
-			System.out.println("Found hit");
 		}
 		return productIds;
 	}

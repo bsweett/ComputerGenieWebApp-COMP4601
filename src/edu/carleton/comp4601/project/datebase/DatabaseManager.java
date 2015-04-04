@@ -4,6 +4,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import org.bson.types.ObjectId;
 import org.mongodb.morphia.Morphia;
 
 import com.mongodb.BasicDBObject;
@@ -97,7 +98,7 @@ public class DatabaseManager {
 	public Product getProductById(String id) {
 		
 		try {
-			BasicDBObject query = new BasicDBObject("id", id);
+			BasicDBObject query = new BasicDBObject("_id", new ObjectId(id));
 			DBCollection col = getProductCollection();
 			DBObject result = col.findOne(query);
 			
@@ -139,37 +140,11 @@ public class DatabaseManager {
 
 		return true; 
 	}
-	
-	public ArrayList<Product> findArrayOfProductsByIds(String[] ids) {
-		
-		ArrayList<Product> list = new ArrayList<Product>();
-		
-		try {
-			DBCollection col = getProductCollection();
-			DBObject query = QueryBuilder.start("_id").in(ids).get();
-			DBCursor cursor = col.find(query);
-			
-			while(cursor.hasNext()) {
-				DBObject obj = cursor.next();
-				Product product = this.morphia.fromDBObject(Product.class, obj);
-				if(product != null) {
-					list.add(product);
-				}
-			}
-			System.out.println(list.size());
-			return list;
-			
-		} catch (MongoException e) {
-			System.out.println("MongoException: " + e.getLocalizedMessage());
-		}
-		
-		return list;
-	}
 
 	public Product removeProduct(String id) {	
 
 		try {
-			BasicDBObject query = new BasicDBObject("id", id);
+			BasicDBObject query = new BasicDBObject("_id", new ObjectId(id));
 			DBCollection col = getProductCollection();
 			DBObject result = col.findAndRemove(query);
 			return morphia.fromDBObject(Product.class, result);

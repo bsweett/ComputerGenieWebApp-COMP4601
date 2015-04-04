@@ -42,8 +42,13 @@ public class ProductRequestHandler extends Action {
 		}
 		
 		HashSet<String> pIds = userSearch.getProductIds();
-		String[] ids = pIds.toArray(new String[pIds.size()]);
-		ArrayList<Product> products = DatabaseManager.getInstance().findArrayOfProductsByIds(ids);
+		
+		ArrayList<Product> products = new ArrayList<Product>();
+		
+		for(String pid : pIds) {
+			Product p = DatabaseManager.getInstance().getProductById(pid);
+			products.add(p);
+		}
 		
 		for(Product p : products) {
 			GenieResponse response = new GenieResponse(p.getId().toString(),
