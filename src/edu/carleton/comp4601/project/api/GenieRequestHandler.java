@@ -1,9 +1,11 @@
 package edu.carleton.comp4601.project.api;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
+import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
@@ -11,6 +13,7 @@ import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.JAXBElement;
 
 import edu.carleton.comp4601.project.dao.Product;
+import edu.carleton.comp4601.project.dao.User;
 import edu.carleton.comp4601.project.datebase.DatabaseManager;
 import edu.carleton.comp4601.project.index.GenieQuerier;
 import edu.carleton.comp4601.project.model.GenieRequest;
@@ -51,15 +54,34 @@ public class GenieRequestHandler extends Action {
 			responses.addResponse(gr);
 		}
 		
+		return responses;
+	}
+	
+	@POST
+	@Path("/history")
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_XML)
+	public GenieResponses processGenieHistoryAsXML(JAXBElement<User> u) {
+		
+		User user = u.getValue();
+		
+		HashSet<String> productIds = new HashSet<String>();
+		productIds = user.getProductIds();
+		
+		ArrayList<Product> products = new ArrayList<Product>();
+		
+		for(String pid : productIds) {
+			Product p = DatabaseManager.getInstance().getProductById(pid);
+			products.add(p);
+		}
 		
 		
-		//GenieResponse r1 = new GenieResponse("1","Ben","http://google.com","https://s-media-cache-ak0.pinimg.com/236x/9a/26/84/9a2684c4213171476e13732af3b26537.jpg",0f,"NCIX");
-		//GenieResponse r2 = new GenieResponse("2","Brayden","http://google.com","https://s-media-cache-ak0.pinimg.com/236x/9a/26/84/9a2684c4213171476e13732af3b26537.jpg",0f,"NCIX");
-		//GenieResponse r3 = new GenieResponse("3","Colin","http://google.com","https://s-media-cache-ak0.pinimg.com/236x/9a/26/84/9a2684c4213171476e13732af3b26537.jpg",0f,"NCIX");
+		GenieResponses responses = new GenieResponses();
 		
-		//responses.addResponse(r1);
-		//responses.addResponse(r2);
-		//responses.addResponse(r3);
+		for(Product p : products) {
+			GenieResponse gr = new GenieResponse(p.getId().toString(), p.getTitle(), p.getUrl(), p.getImageSrc(), Float.parseFloat(p.getPrice()), p.getRetailer().name());
+			responses.addResponse(gr);
+		}
 		
 		return responses;
 	}

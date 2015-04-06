@@ -323,7 +323,7 @@ public class DatabaseManager {
 	public boolean addNewReview(Review review) {
 
 		try {
-			DBCollection col = getProductCollection();
+			DBCollection col = getReviewCollection();
 			col.insert(this.morphia.toDBObject(review));
 			
 		} catch (MongoException e) {

@@ -15,6 +15,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.JAXBElement;
 
+import org.bson.types.ObjectId;
+
 import edu.carleton.comp4601.project.dao.Product;
 import edu.carleton.comp4601.project.dao.Review;
 import edu.carleton.comp4601.project.dao.User;
@@ -67,7 +69,8 @@ public class ProductRequestHandler extends Action {
 		
 		Review review = rev.getValue();
 		Response res = null;
-
+		review.setObjectId(new ObjectId());
+		
 		if(review.getContent() != "" && review.getOpinion() != null && review.getUpScore() != null && review.getDownScore() != null && review.getUserId() != "" 
 				&& review.getProductId() != "") {
 			User userSearch = DatabaseManager.getInstance().findUserByToken(super.authToken);

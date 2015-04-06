@@ -3,6 +3,7 @@ package edu.carleton.comp4601.project.dao;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
@@ -14,13 +15,14 @@ import org.mongodb.morphia.annotations.Id;
 public class Review {
 
 	//Identifiers 
+	@XmlTransient
 	@Id ObjectId id;
 	
 	private String productId;
 	private String userId;
 	private String userName;
 	private String content;
-	private Opinion opinion;
+	private String opinion;
 	private Integer upScore;
 	private Integer downScore;
 	private long date;
@@ -85,11 +87,11 @@ public class Review {
 		this.downScore = downScore;
 	}
 
-	public Opinion getOpinion() {
+	public String getOpinion() {
 		return opinion;
 	}
 
-	public void setOpinion(Opinion opinion) {
+	public void setOpinion(String opinion) {
 		this.opinion = opinion;
 	}
 
@@ -99,6 +101,10 @@ public class Review {
 
 	public void setDate(long date) {
 		this.date = date;
+	}
+	
+	public void setObjectId(ObjectId id) {
+		this.id = id;
 	}
 	
 }
