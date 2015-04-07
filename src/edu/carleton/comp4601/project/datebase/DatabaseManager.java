@@ -384,6 +384,39 @@ public class DatabaseManager {
 		return arrayList;
 	}
 	
+	/**
+	 * Returns a list of all reviews by a given user with a given opinion (like or dislike)
+	 * 
+	 * @param userId
+	 * @param opinion
+	 * @return arrayList
+	 */
+	public ArrayList<Review> getReviewsByUserIdWithOpinion(String userId, String opinion) {
+		
+		ArrayList<Review> arrayList = new ArrayList<Review>();
+		
+		try {
+			BasicDBObject query = new BasicDBObject("userId", userId);
+			query.put("opinion", opinion);
+			DBCollection col = getReviewCollection();
+			DBCursor cursor = col.find(query);
+			
+			while(cursor.hasNext()) {
+				DBObject obj = cursor.next();
+				Review review = this.morphia.fromDBObject(Review.class, obj);
+				if(review != null) {
+					arrayList.add(review);
+				}
+			}
+			return arrayList;
+			
+		} catch (MongoException e) {
+			System.out.println("MongoException: " + e.getLocalizedMessage());
+		}
+		
+		return arrayList;
+	}
+	
 	public ArrayList<Review> getReviewsByProductId(String productId) {
 		
 		ArrayList<Review> arrayList = new ArrayList<Review>();

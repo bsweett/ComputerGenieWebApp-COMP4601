@@ -38,6 +38,7 @@ public class User {
 		this.setId(id);
 	}
 
+	@SuppressWarnings("unchecked")
 	public User(Map<?, ?> map) {
 		this();
 		this.setAuthToken((String) map.get("authtoken"));

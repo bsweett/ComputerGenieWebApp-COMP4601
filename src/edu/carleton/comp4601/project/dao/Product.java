@@ -1,16 +1,10 @@
 package edu.carleton.comp4601.project.dao;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
-@XmlRootElement(name = "product")
-@XmlAccessorType (XmlAccessType.FIELD)
 @Entity("products")
 public class Product {
 	
@@ -100,6 +94,10 @@ public class Product {
 	public ObjectId getId() {
 		return this.id;
 	}
+	
+	public void setId(ObjectId id) { 	 	
+		this.id = id; 	 	
+	} 
 
 	public String getTitle() {
 		return title.toLowerCase();

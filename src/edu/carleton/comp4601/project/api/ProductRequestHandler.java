@@ -137,4 +137,36 @@ public class ProductRequestHandler extends Action {
 		
 		return DatabaseManager.getInstance().getReviewsByProductId(productId);
 	}
+	
+	@GET
+	@Path("/reviews/positive")
+	@Produces(MediaType.APPLICATION_XML)
+	public ArrayList<Review> getPositiveReviewsForUser() {
+		
+		User userSearch = DatabaseManager.getInstance().findUserByToken(super.authToken);
+		
+		if(userSearch == null) {
+			// User not authorized
+			return null;
+		}
+		
+		String userId = userSearch.getId();
+		return DatabaseManager.getInstance().getReviewsByUserIdWithOpinion(userId, "LIKE");
+	}
+	
+	@GET
+	@Path("/reviews/negative")
+	@Produces(MediaType.APPLICATION_XML)
+	public ArrayList<Review> getNegativeReviewsForUser() {
+				
+		User userSearch = DatabaseManager.getInstance().findUserByToken(super.authToken);
+		
+		if(userSearch == null) {
+			// User not authorized
+			return null;
+		}
+		
+		String userId = userSearch.getId();
+		return DatabaseManager.getInstance().getReviewsByUserIdWithOpinion(userId, "DISLIKE");
+	}
 }
