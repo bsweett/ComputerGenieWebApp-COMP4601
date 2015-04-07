@@ -63,18 +63,22 @@ public class GenieRequestHandler extends Action {
 	@Produces(MediaType.APPLICATION_XML)
 	public GenieResponses processGenieHistoryAsXML(JAXBElement<User> u) {
 		
+		
+		
 		User user = u.getValue();
-		User oldUser = DatabaseManager.getInstance().findUser(user.getId());
 		
-		DatabaseManager.getInstance().updateUser(user, oldUser);
+		// TODO: Fix update to not break token
+		//User oldUser = DatabaseManager.getInstance().findUser(user.getId());
+
+		//DatabaseManager.getInstance().updateUser(user, oldUser);
 		
-		HashSet<String> productIds = new HashSet<String>();
+		ArrayList<String> productIds = new ArrayList<String>();
 		productIds = user.getProductIds();
 		
 		ArrayList<Product> products = new ArrayList<Product>();
 		
 		for(String pid : productIds) {
-			System.out.println("Found product id");
+			System.out.println("The product id is: " + pid);
 			Product p = DatabaseManager.getInstance().getProductById(pid);
 			products.add(p);
 		}

@@ -43,7 +43,7 @@ public class ProductRequestHandler extends Action {
 			return null;
 		}
 		
-		HashSet<String> pIds = userSearch.getProductIds();
+		ArrayList<String> pIds = userSearch.getProductIds();
 		
 		ArrayList<Product> products = new ArrayList<Product>();
 		
