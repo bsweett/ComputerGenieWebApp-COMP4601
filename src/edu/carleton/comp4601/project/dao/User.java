@@ -1,5 +1,6 @@
 package edu.carleton.comp4601.project.dao;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
 
@@ -27,10 +28,10 @@ public class User {
 	private long lastLoginTime;
 	
 	@XmlElement(name = "productIds")
-	private HashSet<String> productIds;
+	private ArrayList<String> productIds;
 	
 	public User() {
-		this.productIds = new HashSet<String>();
+		this.productIds = new ArrayList<String>();
 	}
 
 	public User(String id) {
@@ -50,7 +51,7 @@ public class User {
 		this.setGender((String) map.get("gender"));
 		this.setBirthday((String) map.get("birthday"));
 		this.setLastLoginTime((long) map.get("lastlogintime"));
-		this.productIds = (HashSet<String>) map.get("productIds");
+		this.productIds = (ArrayList<String>) map.get("productIds");
 	}
 
 	public String getAuthToken() {
@@ -144,7 +145,7 @@ public class User {
 		return dt;
 	}
 	
-	public HashSet<String> getProductIds() {
+	public ArrayList<String> getProductIds() {
 		return this.productIds;
 	}
 }
