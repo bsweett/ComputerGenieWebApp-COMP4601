@@ -49,7 +49,7 @@ public class User {
 		this.setGender((String) map.get("gender"));
 		this.setBirthday((String) map.get("birthday"));
 		this.setLastLoginTime((long) map.get("lastlogintime"));
-		//this.productIds = (HashSet<String>) map.get("productids");
+		this.productIds = (HashSet<String>) map.get("productIds");
 	}
 
 	public String getAuthToken() {

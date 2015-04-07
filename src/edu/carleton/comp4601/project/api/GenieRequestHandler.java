@@ -64,6 +64,9 @@ public class GenieRequestHandler extends Action {
 	public GenieResponses processGenieHistoryAsXML(JAXBElement<User> u) {
 		
 		User user = u.getValue();
+		User oldUser = DatabaseManager.getInstance().findUser(user.getId());
+		
+		DatabaseManager.getInstance().updateUser(user, oldUser);
 		
 		HashSet<String> productIds = new HashSet<String>();
 		productIds = user.getProductIds();
@@ -71,6 +74,7 @@ public class GenieRequestHandler extends Action {
 		ArrayList<Product> products = new ArrayList<Product>();
 		
 		for(String pid : productIds) {
+			System.out.println("Found product id");
 			Product p = DatabaseManager.getInstance().getProductById(pid);
 			products.add(p);
 		}
