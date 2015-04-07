@@ -26,6 +26,8 @@ public class Review {
 	private Integer upScore;
 	private Integer downScore;
 	private long date;
+	private String productName;
+	private String url;
 	
 	public Review() {
 		
@@ -105,6 +107,22 @@ public class Review {
 	
 	public void setObjectId(ObjectId id) {
 		this.id = id;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 	
 }
