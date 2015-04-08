@@ -203,22 +203,21 @@ public class UserRequestHandler extends Action {
 	public GenricServerResponse updateUserFromXML(JAXBElement<User> user) {
 		
 		User newUser = user.getValue();
-		User search = DatabaseManager.getInstance().findUser(newUser.getId());
+		User oldUser = DatabaseManager.getInstance().findUser(newUser.getId());
 		
 		Response res = null;
 		
-		System.out.println("New user auth token: " + newUser.getAuthToken());
-		System.out.println("Old user auth token: " + search.getAuthToken());
-		
-		System.out.println("Update user");
-		
-		if(search == null) {
+		if(oldUser == null) {
 			// They are not authorized to use the application
 			res = Response.status(401).build();
 			return new GenricServerResponse(res.getStatus(), "", "Not Authorized", false);
 		}
 		
-		if(DatabaseManager.getInstance().updateUser(newUser, search.getId())) {
+		newUser.setPasswordHash(oldUser.getPasswordHash());
+
+		System.out.println("Update user");
+		
+		if(DatabaseManager.getInstance().updateUser(newUser, oldUser.getId())) {
 			res = Response.ok().build();
 			return new GenricServerResponse(res.getStatus(), "", "Ok", true);
 		}
