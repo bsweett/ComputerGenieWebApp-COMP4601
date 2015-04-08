@@ -13,6 +13,7 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
+import org.jcp.xml.dsig.internal.dom.Utils;
 
 import edu.carleton.comp4601.project.dao.Dimensions;
 import edu.carleton.comp4601.project.dao.GraphicsCard;
@@ -38,8 +39,7 @@ public class ProductIndexer {
 		this.productSet = products;
 	}
 	
-	public boolean resetIndex() {
-		try {
+	public boolean resetIndex() throws IOException {
 			
 			if(productSet != null) {
 				getIndexWriter(true);
@@ -52,9 +52,7 @@ public class ProductIndexer {
 				return true;
 			}
 			
-		} catch (IOException e) {
-			System.err.println("IOException while indexing products");
-		}
+		
 	
 		return false;
 	}
@@ -143,7 +141,14 @@ public class ProductIndexer {
 	//Gets an instance of the indexWriter if it does not exist
 	private IndexWriter getIndexWriter(boolean create) throws IOException {
 		if (indexWriter == null) {
-			Directory indexDir = FSDirectory.open(new File( this.dirPath + "product-index" ));
+			
+			File path = new File(this.dirPath + "product-index");
+	        
+			if(!path.exists()) { 
+	            path.mkdirs();
+	        }
+	        
+			Directory indexDir = FSDirectory.open(path);
 			IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_4_10_3, new StandardAnalyzer());
 			indexWriter = new IndexWriter(indexDir, config);
 		}

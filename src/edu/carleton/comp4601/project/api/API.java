@@ -1,5 +1,6 @@
 package edu.carleton.comp4601.project.api;
 
+import java.io.IOException;
 import java.util.HashSet;
 
 import javax.ws.rs.GET;
@@ -52,12 +53,19 @@ public class API {
 	@Produces(MediaType.TEXT_HTML)
 	public String resetWithHTML() {
 		HashSet<Product> newPro = DatabaseManager.getInstance().getAllProducts();
+		
+		try{
+		
 		this.indexer.updateProductSet(newPro);
+		
 		
 		if(this.indexer.resetIndex()) {
 			return displayBasicHTMLWithTitle("Reset Complete");
 		}
-				
+		} catch(IOException i) {
+			return displayBasicHTMLWithTitle("Reset Failed - See Server Logs" + i.toString());
+		}
+		
 		return displayBasicHTMLWithTitle("Reset Failed - See Server Logs");
 	}
 	
@@ -66,12 +74,17 @@ public class API {
 	@Produces(MediaType.APPLICATION_XML)
 	public String resetWithXML() {
 		HashSet<Product> newPro = DatabaseManager.getInstance().getAllProducts();
+		try {
+		
 		this.indexer.updateProductSet(newPro);
 		
 		if(this.indexer.resetIndex()) {
 			return displayBasicXMLWithTitle("Reset Complete");
 		}
 		
+		} catch(IOException i) {
+			return displayBasicXMLWithTitle("Reset Failed - See Server Logs" + i.toString());
+		}
 		return displayBasicXMLWithTitle("Reset Failed - See Server Logs");
 	}
 	

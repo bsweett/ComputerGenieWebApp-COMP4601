@@ -202,9 +202,14 @@ public class UserRequestHandler extends Action {
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
 	public GenricServerResponse updateUserFromXML(JAXBElement<User> user) {
-		User search = DatabaseManager.getInstance().findUserByToken(super.authToken);
+		
 		User newUser = user.getValue();
+		User search = DatabaseManager.getInstance().findUser(newUser.getId());
+		
 		Response res = null;
+		
+		System.out.println("New user auth token: " + newUser.getAuthToken());
+		System.out.println("Old user auth token: " + search.getAuthToken());
 		
 		System.out.println("Update user");
 		

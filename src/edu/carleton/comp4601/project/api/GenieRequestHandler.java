@@ -77,11 +77,16 @@ public class GenieRequestHandler extends Action {
 		
 		ArrayList<Product> products = new ArrayList<Product>();
 		
-		for(String pid : productIds) {
-			System.out.println("The product id is: " + pid);
-			Product p = DatabaseManager.getInstance().getProductById(pid);
-			products.add(p);
-		}
+
+			for(String pid : productIds) {
+				System.out.println("The product id is: " + pid);
+				
+				if(!pid.isEmpty()) {
+					Product p = DatabaseManager.getInstance().getProductById(pid);
+					products.add(p);
+				}
+			}
+		
 		
 		
 		GenieResponses responses = new GenieResponses();
