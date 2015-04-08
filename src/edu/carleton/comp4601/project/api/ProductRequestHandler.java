@@ -133,13 +133,14 @@ public class ProductRequestHandler extends Action {
 		if(vote.equals("0")) {
 			review.downVote();
 		} else if(vote.equals("1")) {
+			System.out.println("Up");
 			review.upVote();
 		} else {
 			res = Response.notAcceptable(null).build();
 			return new GenricServerResponse(res.getStatus(), "Not Acceptable", "Missing parameters", false);
 		}
-		
-		if(DatabaseManager.getInstance().updateReviewScore(review)) {
+
+		if(DatabaseManager.getInstance().updateReviewScore(review, userSearch.getId().toString())) {
 			res = Response.ok().build();
 			return new GenricServerResponse(res.getStatus(), "Ok", "Ok", true);
 		}

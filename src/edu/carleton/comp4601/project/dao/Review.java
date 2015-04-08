@@ -1,7 +1,10 @@
 package edu.carleton.comp4601.project.dao;
 
+import java.util.ArrayList;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -28,6 +31,9 @@ public class Review {
 	private long date;
 	private String productName;
 	private String url;
+	
+	@XmlElement(name = "voter")
+	private ArrayList<String> voters;
 	
 	public Review() {
 		
@@ -131,5 +137,17 @@ public class Review {
 	
 	public void downVote() {
 		this.downScore++;
+	}
+	
+	public void setVoters(ArrayList<String> voters) {
+		this.voters = voters;
+	}
+	
+	public ArrayList<String> getVoters() {
+		return this.voters;
+	}
+	
+	public void addVoter(String id) {
+		this.voters.add(id);
 	}
 }
