@@ -125,4 +125,11 @@ public class Review {
 		this.url = url;
 	}
 	
+	public void upVote() {
+		this.upScore++;
+	}
+	
+	public void downVote() {
+		this.downScore++;
+	}
 }
