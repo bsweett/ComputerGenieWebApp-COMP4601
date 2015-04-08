@@ -335,6 +335,26 @@ public class DatabaseManager {
 		return true; 	
 	}
 	
+	public boolean updateReviewScore(Review review) {
+		
+		try {
+			BasicDBObject query = new BasicDBObject("_id", review.getId());
+			
+			BasicDBObject newDocument = new BasicDBObject();
+			newDocument.append("$set", new BasicDBObject().append("upScore", review.getUpScore()));
+			newDocument.append("$set", new BasicDBObject().append("downScore", review.getDownScore()));
+			
+			DBCollection col = getReviewCollection();
+			col.update(query, newDocument);
+			
+		} catch (MongoException e) {
+			System.out.println("MongoException: " + e.getLocalizedMessage());
+			return false;
+		}
+
+		return true;
+	}
+	
 	public Review getReviewByUserIdForProductId(String userId, String productId) {
 		
 		try {

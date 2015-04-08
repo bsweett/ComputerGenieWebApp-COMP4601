@@ -26,7 +26,7 @@ public class API {
 
 	private String displayName;
 	private final String lucenePath = System.getProperty("user.home") + "/data/";
-	
+
 	private ProductIndexer indexer;
 	private HashSet<Product> products;
 
@@ -47,73 +47,70 @@ public class API {
 	public String homeAsHtml() {
 		return displayBasicHTMLWithTitle(displayName);
 	}
-	
+
 	@GET
 	@Path("/reset") 
 	@Produces(MediaType.TEXT_HTML)
 	public String resetWithHTML() {
 		HashSet<Product> newPro = DatabaseManager.getInstance().getAllProducts();
-		
-		try{
-		
-		this.indexer.updateProductSet(newPro);
-		
-		
-		if(this.indexer.resetIndex()) {
-			return displayBasicHTMLWithTitle("Reset Complete");
-		}
+
+		try {
+			this.indexer.updateProductSet(newPro);
+
+			if(this.indexer.resetIndex()) {
+				return displayBasicHTMLWithTitle("Reset Complete");
+			}
 		} catch(IOException i) {
-			return displayBasicHTMLWithTitle("Reset Failed - See Server Logs" + i.toString());
+			return displayBasicHTMLWithTitle("Reset Failed - See Server Logs: " + i.toString());
 		}
-		
+
 		return displayBasicHTMLWithTitle("Reset Failed - See Server Logs");
 	}
-	
+
 	@GET
 	@Path("/reset") 
 	@Produces(MediaType.APPLICATION_XML)
 	public String resetWithXML() {
 		HashSet<Product> newPro = DatabaseManager.getInstance().getAllProducts();
 		try {
-		
-		this.indexer.updateProductSet(newPro);
-		
-		if(this.indexer.resetIndex()) {
-			return displayBasicXMLWithTitle("Reset Complete");
-		}
-		
+
+			this.indexer.updateProductSet(newPro);
+
+			if(this.indexer.resetIndex()) {
+				return displayBasicXMLWithTitle("Reset Complete");
+			}
 		} catch(IOException i) {
-			return displayBasicXMLWithTitle("Reset Failed - See Server Logs" + i.toString());
+			return displayBasicXMLWithTitle("Reset Failed - See Server Logs: " + i.toString());
 		}
 		return displayBasicXMLWithTitle("Reset Failed - See Server Logs");
 	}
-	
+
 	@Path("/user/{authToken}")
 	public Action userRequestAsXML(@PathParam("authToken") String authToken) {	
-		
+
 		return new UserRequestHandler(uriInfo, request, authToken);
 	}
-	
+
 	@Path("/product/{authToken}")
 	public Action productRequestAsXML(@PathParam("authToken") String authToken) {
-		
+
 		return new ProductRequestHandler(uriInfo, request, authToken);
 	}
-	
+
 	@Path("/genie/{authToken}")
 	public Action genieRequestAsXML(@PathParam("authToken") String authToken) {
-		
+
 		return new GenieRequestHandler(uriInfo, request, authToken);
 	}
-	
+
 	private String displayBasicHTMLWithTitle(String title) {
-		
+
 		return "<html> " + "<title>" + title + "</title>" + "<body><h3>" + title
 				+ "</body></h3>" + "</html> ";
 	}
-	
+
 	private String displayBasicXMLWithTitle(String title) {
-		
+
 		return "<?xml version=\"1.0\"?>" + "<api> " + title + " </api>";
 	}
 }

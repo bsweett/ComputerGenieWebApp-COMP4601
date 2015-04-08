@@ -13,7 +13,6 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
-import org.jcp.xml.dsig.internal.dom.Utils;
 
 import edu.carleton.comp4601.project.dao.Dimensions;
 import edu.carleton.comp4601.project.dao.GraphicsCard;

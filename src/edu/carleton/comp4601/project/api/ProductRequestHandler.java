@@ -112,7 +112,42 @@ public class ProductRequestHandler extends Action {
 		return new GenricServerResponse(res.getStatus(), "Not Acceptable", "Missing parameters", false);
 	}
 	
-	// NOTE: In production would page them using pagaination 
+	@GET
+	@Path("/review/{productId}/{userId}/{vote}")
+	@Produces(MediaType.APPLICATION_XML)
+	public GenricServerResponse updateReviewScore(@PathParam("productId") String productId, @PathParam("userId") String userId, @PathParam("vote") String vote) {
+		
+		User userSearch = DatabaseManager.getInstance().findUserByToken(super.authToken);
+		Response res = null;
+		if(userSearch == null) {
+			res = Response.status(401).build();
+			return new GenricServerResponse(res.getStatus(), "Unauthorized", "Invalid Token", false);
+		}
+		
+		Review review = DatabaseManager.getInstance().getReviewByUserIdForProductId(userId, productId);
+		if(review == null) {
+			res = Response.noContent().build();
+			return new GenricServerResponse(res.getStatus(), "Not Acceptable", "Review not found", false);
+		}
+		
+		if(vote.equals("0")) {
+			review.downVote();
+		} else if(vote.equals("1")) {
+			review.upVote();
+		} else {
+			res = Response.notAcceptable(null).build();
+			return new GenricServerResponse(res.getStatus(), "Not Acceptable", "Missing parameters", false);
+		}
+		
+		if(DatabaseManager.getInstance().updateReviewScore(review)) {
+			res = Response.ok().build();
+			return new GenricServerResponse(res.getStatus(), "Ok", "Ok", true);
+		}
+		
+		res = Response.notAcceptable(null).build();
+		return new GenricServerResponse(res.getStatus(), "Not Acceptable", "Missing parameters", false);
+	}
+	 
 	@GET
 	@Path("/reviews/{productId}")
 	@Produces(MediaType.APPLICATION_XML)
