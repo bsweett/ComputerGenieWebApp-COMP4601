@@ -67,12 +67,12 @@ public class UserRequestHandler extends Action {
 		User u = user.getValue();
 		User search = DatabaseManager.getInstance().findUserByPasswordEmail(u.getEmail(), u.getPasswordHash());
 		Response res = null;
-
+		String debug = null;
 		System.out.println("New user");
 		
 		if(search != null) {
 			res = Response.notAcceptable(null).build();
-			
+
 			// User already Exists send back there auth token and make a login request
 			return new GenricServerResponse(res.getStatus(), "", search.getAuthToken(), false);
 		}
@@ -84,17 +84,19 @@ public class UserRequestHandler extends Action {
 		try {
 			String auth = buildAuthToken(email, password, Long.toString(u.getLastLoginTime()));
 			u.setAuthToken(auth);
-
+			debug = "Built Authtoken";
 			if(DatabaseManager.getInstance().addNewUser(u)) {
+				debug += " - Added user to db";
 				res = Response.ok().build();
 				return new GenricServerResponse(res.getStatus(), "", u.getAuthToken(), true);
 			}
 		} catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
 			System.err.println("Exception hashing password");
+			debug += " - " + e.toString();
 		}
 
 		res = Response.serverError().build();
-		return new GenricServerResponse(res.getStatus(), "", "Server Exception", false);
+		return new GenricServerResponse(res.getStatus(), "", "Server Exception" + " - " + debug, false);
 	}
 
 	/**
