@@ -1,7 +1,6 @@
 package edu.carleton.comp4601.project.api;
 
 import java.io.IOException;
-import java.util.HashSet;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -12,8 +11,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.UriInfo;
 
-import edu.carleton.comp4601.project.dao.Product;
-import edu.carleton.comp4601.project.datebase.DatabaseManager;
 import edu.carleton.comp4601.project.index.ProductIndexer;
 
 @Path("/api")
@@ -25,15 +22,9 @@ public class API {
 	Request request;
 
 	private String displayName;
-	private final String lucenePath = System.getProperty("user.home") + "/data/";
-
-	private ProductIndexer indexer;
-	private HashSet<Product> products;
 
 	public API() {
 		this.displayName = "Computer Genie Restful Web Service";
-		this.products = new HashSet<Product>();
-		this.indexer = new ProductIndexer(lucenePath, products);
 	}
 
 	@GET
@@ -52,12 +43,11 @@ public class API {
 	@Path("/reset") 
 	@Produces(MediaType.TEXT_HTML)
 	public String resetWithHTML() {
-		HashSet<Product> newPro = DatabaseManager.getInstance().getAllProducts();
 
 		try {
-			this.indexer.updateProductSet(newPro);
+			ProductIndexer.getInstance().updateProductSet();
 
-			if(this.indexer.resetIndex()) {
+			if(ProductIndexer.getInstance().resetIndex()) {
 				return displayBasicHTMLWithTitle("Reset Complete");
 			}
 		} catch(IOException i) {
@@ -71,12 +61,11 @@ public class API {
 	@Path("/reset") 
 	@Produces(MediaType.APPLICATION_XML)
 	public String resetWithXML() {
-		HashSet<Product> newPro = DatabaseManager.getInstance().getAllProducts();
 		try {
 
-			this.indexer.updateProductSet(newPro);
+			ProductIndexer.getInstance().updateProductSet();
 
-			if(this.indexer.resetIndex()) {
+			if(ProductIndexer.getInstance().resetIndex()) {
 				return displayBasicXMLWithTitle("Reset Complete");
 			}
 		} catch(IOException i) {

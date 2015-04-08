@@ -14,4 +14,7 @@
     <servlet-name>ComputerGenieWebApp</servlet-name>
     <url-pattern>/rest/*</url-pattern>
   </servlet-mapping>
+  <listener>
+	<listener-class>edu.carleton.comp4601.project.model.SDAContextClass</listener-class>
+  </listener>
 </web-app>

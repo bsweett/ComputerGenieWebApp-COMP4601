@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -14,7 +16,6 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
-import org.bson.types.ObjectId;
 
 import edu.carleton.comp4601.project.dao.Dimensions;
 import edu.carleton.comp4601.project.dao.GraphicsCard;
@@ -29,23 +30,40 @@ import edu.carleton.comp4601.project.datebase.DatabaseManager;
 
 public class ProductIndexer {
 
-	private String dirPath;
 	private IndexWriter indexWriter = null;
-	private HashSet<Product> productSet;
+	private HashSet<Product> productSet = new HashSet<Product>();
+	private static ProductIndexer instance;
+	private final String dirPath = System.getProperty("user.home") + "/data/";
+	TimerTask timerTask;
+	Timer timer;
 	
-	public ProductIndexer(String dirPath, HashSet<Product> products) {
-		this.dirPath = dirPath;
-		this.productSet = products;
+	public static ProductIndexer getInstance() {
+
+		if (instance == null)
+			instance = new ProductIndexer();
+		return instance;
+
 	}
 	
-	public void updateProductSet(HashSet<Product> products) {
-		this.productSet = products;
+	public static void setInstance(ProductIndexer instance) {
+		ProductIndexer.instance = instance;
+	}
+	
+	public ProductIndexer() {
+		timerTask = new IndexTimerTask();
+        timer = new Timer(true);
+        timer.scheduleAtFixedRate(timerTask, 0, 3600*1000);
+	}
+	
+	public void updateProductSet() {
+		this.productSet = DatabaseManager.getInstance().getAllProducts();
 	}
 	
 	public boolean resetIndex() throws IOException {
 			
 			if(productSet != null) {
-				getIndexWriter(true);
+				
+				this.indexWriter = null;
 				
 				for(Product p : this.productSet) {
 				    indexProduct(p);
@@ -62,7 +80,7 @@ public class ProductIndexer {
 	
 	private void indexProduct(Product product) throws IOException {
 		
-		IndexWriter writer = getIndexWriter(false);
+		IndexWriter writer = getIndexWriter();
 		
 		Dimensions dim = product.getDimensions();
 		Screen screen = product.getScreen();
@@ -144,7 +162,7 @@ public class ProductIndexer {
 	}
 				
 	//Gets an instance of the indexWriter if it does not exist
-	private IndexWriter getIndexWriter(boolean create) throws IOException {
+	private IndexWriter getIndexWriter() throws IOException {
 		if (indexWriter == null) {
 			
 			File path = new File(this.dirPath + "product-index");
@@ -167,11 +185,12 @@ public class ProductIndexer {
 			IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_4_10_3, new StandardAnalyzer());
 			indexWriter = new IndexWriter(indexDir, config);
 		}
+
 		return indexWriter;
 	}    
 
 	//Closes the index writer
-	private void closeIndexWriter() throws IOException {
+	public void closeIndexWriter() throws IOException {
 		if (indexWriter != null) {
 			indexWriter.close();
 		}
