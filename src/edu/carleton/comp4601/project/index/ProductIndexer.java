@@ -10,6 +10,7 @@ import java.util.TimerTask;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.document.FieldType;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
@@ -90,58 +91,62 @@ public class ProductIndexer {
 		InputOutput io = product.getIo();
 		GraphicsCard gCard = product.getGraphics();
 		
-		StringField[] fields = {
+	
+		FieldType myStringType = new FieldType(StringField.TYPE_STORED);
+		myStringType.setOmitNorms(false);
+		
+		Field[] fields = {
 				// General
-				new StringField("id", product.getId().toString(), Field.Store.YES),
-				new StringField("title", product.getTitle(), Field.Store.YES),
-				new StringField("retailer", product.getRetailer().toString(), Field.Store.YES),
-				new StringField("model", product.getModel(), Field.Store.YES),
-				new StringField("type", product.getType().toString(), Field.Store.YES),
-				new StringField("price", this.priceToString(product.getPrice()), Field.Store.YES),
+				new Field("id", product.getId().toString(), myStringType),
+				new Field("title", product.getTitle(), myStringType),
+				new Field("retailer", product.getRetailer().toString(), myStringType),
+				new Field("model", product.getModel(), myStringType),
+				new Field("type", product.getType().toString(), myStringType),
+				new Field("price", this.priceToString(product.getPrice()), myStringType),
 				//Dimensions
-				new StringField("depth", dim.getDepth(), Field.Store.YES),
-				new StringField("width", dim.getWidth(), Field.Store.YES),
-				new StringField("height", dim.getHeight(), Field.Store.YES),
-				new StringField("weight", dim.getWeight(), Field.Store.YES),
+				new Field("depth", dim.getDepth(), myStringType),
+				new Field("width", dim.getWidth(), myStringType),
+				new Field("height", dim.getHeight(), myStringType),
+				new Field("weight", dim.getWeight(), myStringType),
 				//Screen
-				new StringField("ScreenRes", screen.getScreenRes(), Field.Store.YES),
-				new StringField("screenSize", screen.getScreenSize(), Field.Store.YES),
-				new StringField("touch", screen.isTouchScreen(), Field.Store.YES),
+				new Field("ScreenRes", screen.getScreenRes(), myStringType),
+				new Field("screenSize", screen.getScreenSize(), myStringType),
+				new Field("touch", screen.isTouchScreen(), myStringType),
 				//Processor
-				new StringField("proBrand", processor.getBrand(), Field.Store.YES),
-				new StringField("cores", processor.getNumberOfCores(), Field.Store.YES),
-				new StringField("proType", processor.getProcessorType(), Field.Store.YES),
-				new StringField("proSpeed", processor.getSpeed(), Field.Store.YES),
+				new Field("proBrand", processor.getBrand(), myStringType),
+				new Field("cores", processor.getNumberOfCores(), myStringType),
+				new Field("proType", processor.getProcessorType(), myStringType),
+				new Field("proSpeed", processor.getSpeed(), myStringType),
 				//RAM
-				new StringField("ramSize", ram.getMemorySize(), Field.Store.YES),
-				new StringField("ramType", ram.getType(), Field.Store.YES),
+				new Field("ramSize", ram.getMemorySize(), myStringType),
+				new Field("ramType", ram.getType(), myStringType),
 				//Harddrive
-				new StringField("space", drive.getCapacity(), Field.Store.YES),
-				new StringField("driveType", drive.getDriveType(), Field.Store.YES),
-				new StringField("speed", drive.getSpeed(), Field.Store.YES),
-				new StringField("dType", drive.getType(), Field.Store.YES),
+				new Field("space", drive.getCapacity(), myStringType),
+				new Field("driveType", drive.getDriveType(), myStringType),
+				new Field("speed", drive.getSpeed(), myStringType),
+				new Field("dType", drive.getType(), myStringType),
 				//IO
-				new StringField("keyboard", io.getKeyboard(), Field.Store.YES),
-				new StringField("mouse", io.getMouse(), Field.Store.YES),
-				new StringField("speakers", io.getSpeakers(), Field.Store.YES),
-				new StringField("usb", io.getUSBPorts(), Field.Store.YES),
-				new StringField("dvi", io.isHasDVI(), Field.Store.YES),
-				new StringField("vga", io.isHasVGA(), Field.Store.YES),
-				new StringField("hdmi", io.isHasHDMI(), Field.Store.YES),
-				new StringField("webcam", io.isHasWebCam(), Field.Store.YES),
-				new StringField("firewire", io.getFirewire(),Field.Store.YES),
-				new StringField("remote", io.getRemote(),Field.Store.YES),
-				new StringField("other", io.getOther(),Field.Store.YES),
+				new Field("keyboard", io.getKeyboard(), myStringType),
+				new Field("mouse", io.getMouse(), myStringType),
+				new Field("speakers", io.getSpeakers(), myStringType),
+				new Field("usb", io.getUSBPorts(), myStringType),
+				new Field("dvi", io.isHasDVI(), myStringType),
+				new Field("vga", io.isHasVGA(), myStringType),
+				new Field("hdmi", io.isHasHDMI(), myStringType),
+				new Field("webcam", io.isHasWebCam(), myStringType),
+				new Field("firewire", io.getFirewire(),myStringType),
+				new Field("remote", io.getRemote(),myStringType),
+				new Field("other", io.getOther(),myStringType),
 				//Graphics
-				new StringField("manufacturer", gCard.getManufacturer(),Field.Store.YES),
-				new StringField("gMemType", gCard.getMemoryType(),Field.Store.YES),
-				new StringField("gModel", gCard.getModel(),Field.Store.YES),
-				new StringField("memoryCap", gCard.getModel(),Field.Store.YES),
+				new Field("manufacturer", gCard.getManufacturer(),myStringType),
+				new Field("gMemType", gCard.getMemoryType(),myStringType),
+				new Field("gModel", gCard.getModel(),myStringType),
+				new Field("memoryCap", gCard.getModel(),myStringType),
 				//Other
-				new StringField("os", product.getOs(),Field.Store.YES),
-				new StringField("wifi", product.getWifi(),Field.Store.YES),
-				new StringField("audio", product.getAudioDescription(),Field.Store.YES),
-				new StringField("battery", product.getBatteryLife(), Field.Store.YES)
+				new Field("os", product.getOs(),myStringType),
+				new Field("wifi", product.getWifi(),myStringType),
+				new Field("audio", product.getAudioDescription(),myStringType),
+				new Field("battery", product.getBatteryLife(), myStringType)
 		};
 		
 		fields = this.boostProducts(fields, product);
@@ -151,10 +156,10 @@ public class ProductIndexer {
 		writer.addDocument(doc);
 	}
 	
-	private Document addAllStringsToDocument(StringField[] fields) {
+	private Document addAllStringsToDocument(Field[] fields) {
 		Document doc = new Document();
 		
-		for(StringField sf : fields) {
+		for(Field sf : fields) {
 			doc.add(sf);
 		}
 		
@@ -207,7 +212,7 @@ public class ProductIndexer {
 		return cleanPrice;
 	}
 	
-	private StringField[] boostProducts(StringField[] fields, Product product) {
+	private Field[] boostProducts(Field[] fields, Product product) {
 		ArrayList<Review> reviews = new ArrayList<Review>();
 		reviews = DatabaseManager.getInstance().getReviewsByProductId(product.getId().toString());
 		int overallScore = 0;
