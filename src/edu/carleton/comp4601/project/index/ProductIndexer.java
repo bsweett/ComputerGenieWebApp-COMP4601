@@ -2,6 +2,7 @@ package edu.carleton.comp4601.project.index;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -13,6 +14,7 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
+import org.bson.types.ObjectId;
 
 import edu.carleton.comp4601.project.dao.Dimensions;
 import edu.carleton.comp4601.project.dao.GraphicsCard;
@@ -21,7 +23,9 @@ import edu.carleton.comp4601.project.dao.InputOutput;
 import edu.carleton.comp4601.project.dao.Processor;
 import edu.carleton.comp4601.project.dao.Product;
 import edu.carleton.comp4601.project.dao.RAM;
+import edu.carleton.comp4601.project.dao.Review;
 import edu.carleton.comp4601.project.dao.Screen;
+import edu.carleton.comp4601.project.datebase.DatabaseManager;
 
 public class ProductIndexer {
 
@@ -122,6 +126,8 @@ public class ProductIndexer {
 				new StringField("battery", product.getBatteryLife(), Field.Store.YES)
 		};
 		
+		fields = this.boostProducts(fields, product);
+		
 		Document doc = addAllStringsToDocument(fields);
 		
 		writer.addDocument(doc);
@@ -143,8 +149,18 @@ public class ProductIndexer {
 			
 			File path = new File(this.dirPath + "product-index");
 	        
-			if(!path.exists()) { 
-	            path.mkdirs();
+			if(path.exists()) { 
+	           File[] existingFiles = null;
+	           existingFiles = path.listFiles();
+	           
+	           if(existingFiles != null) {
+	        	   for(int i=0; i<existingFiles.length; i++) {
+	        		   existingFiles[i].delete();
+	        	   }
+	           }
+	           
+	        } else {
+	        	path.mkdirs();
 	        }
 	        
 			Directory indexDir = FSDirectory.open(path);
@@ -170,5 +186,35 @@ public class ProductIndexer {
 		}
 	
 		return cleanPrice;
+	}
+	
+	private StringField[] boostProducts(StringField[] fields, Product product) {
+		ArrayList<Review> reviews = new ArrayList<Review>();
+		reviews = DatabaseManager.getInstance().getReviewsByProductId(product.getId().toString());
+		int overallScore = 0;
+		
+		for (Review review : reviews) {
+			overallScore += review.getUpScore() - review.getDownScore();
+		}
+		
+		if(reviews.size() > 0) {
+			overallScore = overallScore/reviews.size();
+		}
+		
+		if(overallScore > 4) {
+			overallScore = 4;
+		}
+		
+		if(overallScore < -4) {
+			overallScore = -4;
+		}
+		
+		float boost = (overallScore * 0.25f) + 1;
+		
+		for(int i=0; i<fields.length; i++) {
+			fields[i].setBoost(boost);
+		}
+		
+		return fields;
 	}
 }
