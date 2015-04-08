@@ -75,7 +75,7 @@ public class ProductIndexer {
 				new StringField("retailer", product.getRetailer().toString(), Field.Store.YES),
 				new StringField("model", product.getModel(), Field.Store.YES),
 				new StringField("type", product.getType().toString(), Field.Store.YES),
-				new StringField("price", product.getPrice(), Field.Store.YES),
+				new StringField("price", this.priceToString(product.getPrice()), Field.Store.YES),
 				//Dimensions
 				new StringField("depth", dim.getDepth(), Field.Store.YES),
 				new StringField("width", dim.getWidth(), Field.Store.YES),
@@ -159,5 +159,16 @@ public class ProductIndexer {
 		if (indexWriter != null) {
 			indexWriter.close();
 		}
+	}
+	
+	private String priceToString(String price) {
+	
+		String cleanPrice = price.replaceAll("[^0-9]", "");
+	
+		while(cleanPrice.length() < 7) {
+			cleanPrice = "0" + cleanPrice;
+		}
+	
+		return cleanPrice;
 	}
 }

@@ -53,7 +53,7 @@ public class ProductRequestHandler extends Action {
 		
 		for(Product p : products) {
 			GenieResponse response = new GenieResponse(p.getId().toString(),
-					p.getTitle(),p.getUrl(),p.getImageSrc(), Float.parseFloat(p.getPrice()) ,p.getRetailer().toString());
+					p.getTitle(),p.getUrl(),p.getImageSrc(), p.getPrice() ,p.getRetailer().toString());
 			responses.addResponse(response);
 		}
 		

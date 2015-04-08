@@ -74,17 +74,17 @@ public class GenieQuerier {
 		String upperPrice = "";
 		
 		if(request.getPrice() == 500) {
-			lowerPrice = "0.00";
-			upperPrice = "500.00";
+			lowerPrice = "0000000";
+			upperPrice = "0050000";
 		} else if(request.getPrice() == 1000) {
-			lowerPrice = "500.01";
-			upperPrice = "1000.00";
+			lowerPrice = "0050001";
+			upperPrice = "0100000";
 		} else if(request.getPrice() == 2000) {
-			lowerPrice = "1000.01";
-			upperPrice = "2000.00";
+			lowerPrice = "0100001";
+			upperPrice = "0200000";
 		} else if(request.getPrice() == 5000) {
-			lowerPrice = "2000.01";
-			upperPrice = "5000.00";
+			lowerPrice = "0200001";
+			upperPrice = "0500000";
 		}
 		
 		queries.add("price:[" + lowerPrice + " TO " + upperPrice + "]"); 

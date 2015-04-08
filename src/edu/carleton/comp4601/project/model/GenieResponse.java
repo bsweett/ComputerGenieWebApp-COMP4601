@@ -6,14 +6,14 @@ public class GenieResponse {
 	private String name;
 	private String url;
 	private String image;
-	private float price;
+	private String price;
 	private String retailer;
 	
 	public GenieResponse() {
 		
 	}
 	
-	public GenieResponse(String id, String name, String url, String image, float price, String retailer) {
+	public GenieResponse(String id, String name, String url, String image, String price, String retailer) {
 		this();
 		setId(id);
 		setName(name);
@@ -55,11 +55,11 @@ public class GenieResponse {
 		this.image = image;
 	}
 
-	public float getPrice() {
+	public String getPrice() {
 		return price;
 	}
 
-	public void setPrice(float price) {
+	public void setPrice(String price) {
 		this.price = price;
 	}
 
