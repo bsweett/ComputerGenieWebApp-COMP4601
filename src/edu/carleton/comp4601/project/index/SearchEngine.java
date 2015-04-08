@@ -46,6 +46,25 @@ public class SearchEngine {
 		
 		return searcher.search(booleanQuery, n);
 	}
+	
+	public TopDocs performSearchLastResort(ArrayList<String> queryStrings, int n)
+			throws IOException, ParseException {
+		
+		BooleanQuery booleanQuery = new BooleanQuery();
+		parser.setAllowLeadingWildcard(true);
+		for(String queryString : queryStrings) {	
+			
+			if(queryString.contains("form") || queryString.contains("os")) {
+				Query query = parser.parse(queryString);
+				booleanQuery.add(query, BooleanClause.Occur.MUST);
+			} else {
+				Query query = parser.parse(queryString);
+				booleanQuery.add(query, BooleanClause.Occur.SHOULD);
+			}
+		}
+		
+		return searcher.search(booleanQuery, n);
+	}
 
 	public Document getDocument(int docId)
 			throws IOException {

@@ -181,6 +181,18 @@ public class GenieQuerier {
 				TopDocs topDocs2 = searchEngine.performSearch(titleQueries, 6);
 				productIds.addAll(getProductIdsFromHits(topDocs2.scoreDocs, searchEngine));
 			}
+			if(productIds.size() < 3) {
+				System.out.println("Could not find more than 3 objects with full title query, resorting to form and os only");
+				searchEngine = new SearchEngine();
+				TopDocs topDocs2 = searchEngine.performSearchLastResort(queries, 6);
+				productIds.addAll(getProductIdsFromHits(topDocs2.scoreDocs, searchEngine));
+			}
+			if(productIds.size() < 3) {
+				System.out.println("Could not find more than 3 objects with form os query, resorting to title form os only");
+				searchEngine = new SearchEngine();
+				TopDocs topDocs2 = searchEngine.performSearchLastResort(titleQueries, 6);
+				productIds.addAll(getProductIdsFromHits(topDocs2.scoreDocs, searchEngine));
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
