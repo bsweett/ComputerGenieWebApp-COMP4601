@@ -335,17 +335,22 @@ public class DatabaseManager {
 		return true; 	
 	}
 	
-	public boolean updateReviewScore(Review review) {
+	public boolean updateReviewScore(Review review, String voterId) {
 		
-		try {
-			BasicDBObject query = new BasicDBObject("_id", review.getId());
+		try {			
+			BasicDBObject query = new BasicDBObject("_id", review.getId());		
 			
-			BasicDBObject newDocument = new BasicDBObject();
-			newDocument.append("$set", new BasicDBObject().append("upScore", review.getUpScore()));
-			newDocument.append("$set", new BasicDBObject().append("downScore", review.getDownScore()));
+			BasicDBObject carrier = new BasicDBObject();
+			BasicDBObject set = new BasicDBObject("$set", carrier);
+			carrier.put("upScore", review.getUpScore());
+			carrier.put("downScore", review.getDownScore());
 			
+			BasicDBObject listItem = new BasicDBObject("voters", voterId);
+			BasicDBObject push = new BasicDBObject("$push", listItem);
+
 			DBCollection col = getReviewCollection();
-			col.update(query, newDocument);
+			col.update(query, set);
+			col.update(query, push);
 			
 		} catch (MongoException e) {
 			System.out.println("MongoException: " + e.getLocalizedMessage());
