@@ -189,11 +189,12 @@ public class DatabaseManager {
 		return true; 	
 	}
 
-	public boolean updateUser(User newUser, User oldUser) {
+	public boolean updateUser(User newUser, String userId) {
 
 		try {
+			BasicDBObject query = new BasicDBObject("id", userId);
 			DBCollection col = getUserCollection();
-			col.update(buildDBObject(oldUser), buildDBObject(newUser));
+			col.update(query, buildDBObject(newUser));
 
 		} catch (MongoException e) {
 			System.out.println("MongoException: " + e.getLocalizedMessage());

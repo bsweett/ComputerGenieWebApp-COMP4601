@@ -1,7 +1,6 @@
 package edu.carleton.comp4601.project.dao;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -50,7 +49,7 @@ public class User {
 		this.setPasswordHash((String) map.get("passwordhash"));
 		this.setGender((String) map.get("gender"));
 		this.setBirthday((String) map.get("birthday"));
-		this.setLastLoginTime((long) map.get("lastlogintime"));
+		this.setLastLoginTime((Long) map.get("lastlogintime"));
 		this.productIds = (ArrayList<String>) map.get("productIds");
 	}
 

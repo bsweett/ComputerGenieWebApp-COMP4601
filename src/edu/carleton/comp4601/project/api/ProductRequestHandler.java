@@ -1,7 +1,6 @@
 package edu.carleton.comp4601.project.api;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -125,6 +124,7 @@ public class ProductRequestHandler extends Action {
 		
 		if(userSearch == null) {
 			// User not authorized
+			System.out.println("User is not authorized");
 			return null;
 		}
 		
@@ -147,6 +147,7 @@ public class ProductRequestHandler extends Action {
 		
 		if(userSearch == null) {
 			// User not authorized
+			System.out.println("User is not authorized");
 			return null;
 		}
 		
@@ -163,6 +164,7 @@ public class ProductRequestHandler extends Action {
 		
 		if(userSearch == null) {
 			// User not authorized
+			System.out.println("USer is not authorized");
 			return null;
 		}
 		

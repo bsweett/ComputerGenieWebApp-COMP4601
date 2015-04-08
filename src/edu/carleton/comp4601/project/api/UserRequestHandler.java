@@ -24,7 +24,7 @@ import edu.carleton.comp4601.project.dao.Review;
 import edu.carleton.comp4601.project.dao.User;
 import edu.carleton.comp4601.project.datebase.DatabaseManager;
 import edu.carleton.comp4601.project.model.GenricServerResponse;
-import edu.carleton.comp4601.project.model.StatResponse;
+import edu.carleton.comp4601.project.model.UserProfile;
 
 public class UserRequestHandler extends Action {
 
@@ -79,13 +79,10 @@ public class UserRequestHandler extends Action {
 
 		String email = u.getEmail();
 		String password = u.getPasswordHash();
-		String time = Long.toString(u.getLastLoginTime());
-		
-		System.out.println(email);
-		System.out.println(password);
+		u.setLastLoginTime(new DateTime().getMillis());
 
 		try {
-			String auth = buildAuthToken(email, password, time);
+			String auth = buildAuthToken(email, password, Long.toString(u.getLastLoginTime()));
 			u.setAuthToken(auth);
 
 			if(DatabaseManager.getInstance().addNewUser(u)) {
@@ -125,13 +122,15 @@ public class UserRequestHandler extends Action {
 		}
 				
 		try {
-			updateUser.setLastLoginTime((new DateTime().getMillis()));
+			updateUser.setLastLoginTimeFromDate(new DateTime());
+			System.out.println("Update User Login: " + updateUser.getLastLoginTime());
 			String time = Long.toString(updateUser.getLastLoginTime());
 			
 			String auth = buildAuthToken(email, password, time);
 			updateUser.setAuthToken(auth);
+			System.out.println("New Auth Token: " + updateUser.getAuthToken());
 
-			if(DatabaseManager.getInstance().updateUser(updateUser, search)) {
+			if(DatabaseManager.getInstance().updateUser(updateUser, search.getId())) {
 				System.out.println("Returning user");
 				return updateUser;
 			}
@@ -219,7 +218,7 @@ public class UserRequestHandler extends Action {
 			return new GenricServerResponse(res.getStatus(), "", "Not Authorized", false);
 		}
 		
-		if(DatabaseManager.getInstance().updateUser(newUser, search)) {
+		if(DatabaseManager.getInstance().updateUser(newUser, search.getId())) {
 			res = Response.ok().build();
 			return new GenricServerResponse(res.getStatus(), "", "Ok", true);
 		}
@@ -229,9 +228,9 @@ public class UserRequestHandler extends Action {
 	}
 	
 	@GET
-	@Path("/stats")
+	@Path("/profile")
 	@Produces(MediaType.APPLICATION_XML)
-	public StatResponse getStatsForUserAsXML() {
+	public UserProfile getProfileForUserAsXML() {
 		
 		User userSearch = DatabaseManager.getInstance().findUserByToken(super.authToken);
 
@@ -250,7 +249,7 @@ public class UserRequestHandler extends Action {
 			downvotes += r.getDownScore();
 		}
 		
-		return new StatResponse(upvotes,downvotes,total);
+		return new UserProfile(upvotes,downvotes,total);
 	}
 	
  }

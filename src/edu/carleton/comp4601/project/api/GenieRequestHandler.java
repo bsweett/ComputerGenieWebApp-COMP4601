@@ -1,7 +1,6 @@
 package edu.carleton.comp4601.project.api;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -31,13 +30,16 @@ public class GenieRequestHandler extends Action {
 	@Produces(MediaType.APPLICATION_XML)
 	public GenieResponses processGenieRequestAsXML(JAXBElement<GenieRequest> genieRequest) {
 		
-		GenieRequest genie = genieRequest.getValue();
-		System.out.println(genie.toString());
+		User userSearch = DatabaseManager.getInstance().findUserByToken(super.authToken);
+
+		if(userSearch == null) {
+			return null;
+		}
 		
+		GenieRequest genie = genieRequest.getValue();		
 		GenieQuerier querier = new GenieQuerier(genie);
 		
 		ArrayList<String> productIds = querier.askGenie();
-		
 		ArrayList<Product> products = new ArrayList<Product>();
 		
 		for(String pid : productIds) {
@@ -45,9 +47,7 @@ public class GenieRequestHandler extends Action {
 			products.add(p);
 		}
 		
-		
-		GenieResponses responses = new GenieResponses();
-		
+		GenieResponses responses = new GenieResponses();		
 		for(Product p : products) {
 			System.out.println("Found a product: " + p.getId().toString());
 			GenieResponse gr = new GenieResponse(p.getId().toString(), p.getTitle(), p.getUrl(), p.getImageSrc(), Float.parseFloat(p.getPrice()), p.getRetailer().name());
@@ -63,14 +63,20 @@ public class GenieRequestHandler extends Action {
 	@Produces(MediaType.APPLICATION_XML)
 	public GenieResponses processGenieHistoryAsXML(JAXBElement<User> u) {
 		
-		
-		
 		User user = u.getValue();
-		
-		// TODO: Fix update to not break token
-		//User oldUser = DatabaseManager.getInstance().findUser(user.getId());
+		User userSearch = DatabaseManager.getInstance().findUserByToken(super.authToken);
 
-		//DatabaseManager.getInstance().updateUser(user, oldUser);
+		if(userSearch == null) {
+			return null;
+		}
+		
+		user.setAuthToken(userSearch.getAuthToken());
+		
+		// TODO: Update doesn't need to be the full object.
+		// Use MongoDB queries to push each productId from the array to the user array in the DB
+		if(!DatabaseManager.getInstance().updateUser(user, userSearch.getId())) {
+			return null;
+		}
 		
 		ArrayList<String> productIds = new ArrayList<String>();
 		productIds = user.getProductIds();
@@ -86,7 +92,6 @@ public class GenieRequestHandler extends Action {
 					products.add(p);
 				}
 			}
-		
 		
 		
 		GenieResponses responses = new GenieResponses();
